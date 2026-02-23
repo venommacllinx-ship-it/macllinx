@@ -1,9 +1,25 @@
 export default function HeroSection() {
   return (
-    <section className="relative min-h-screen flex items-center justify-center animated-gradient overflow-hidden pt-16">
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-16">
+      {/* XXXTentacion background image */}
+      <div
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+        style={{
+          backgroundImage:
+            "url('https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/XXXTentacion_in_2017.jpg/800px-XXXTentacion_in_2017.jpg')",
+        }}
+      />
+
+      {/* Dark overlay gradient — moody, atmospheric */}
+      <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-[#0a0a0a]" />
+      <div className="absolute inset-0 bg-gradient-to-r from-[#0a0a0a]/80 via-transparent to-[#0a0a0a]/80" />
+
+      {/* Purple/red tint overlay for XXX aesthetic */}
+      <div className="absolute inset-0 bg-gradient-to-br from-purple-900/20 via-transparent to-red-900/20" />
+
       {/* Background grid */}
       <div
-        className="absolute inset-0 opacity-10"
+        className="absolute inset-0 opacity-5"
         style={{
           backgroundImage:
             "linear-gradient(rgba(0,255,136,0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(0,255,136,0.3) 1px, transparent 1px)",
@@ -12,7 +28,7 @@ export default function HeroSection() {
       />
 
       {/* Glow orbs */}
-      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-[#00ff88]/5 rounded-full blur-3xl" />
+      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-500/5 rounded-full blur-3xl" />
       <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-[#00ccff]/5 rounded-full blur-3xl" />
 
       <div className="relative z-10 text-center px-4 max-w-5xl mx-auto">
@@ -33,7 +49,7 @@ export default function HeroSection() {
           <span className="gradient-text glow-text">Build.</span>
         </h1>
 
-        <p className="text-lg sm:text-xl text-gray-400 max-w-2xl mx-auto mb-10 leading-relaxed">
+        <p className="text-lg sm:text-xl text-gray-300 max-w-2xl mx-auto mb-10 leading-relaxed drop-shadow-lg">
           Venom is the all-in-one music platform. Generate AI music, publish your tracks to the world,
           compete in music games, and build your own music website — no experience needed.
         </p>
@@ -48,7 +64,7 @@ export default function HeroSection() {
           </a>
           <a
             href="#games"
-            className="px-8 py-4 border border-[#1a1a1a] text-white font-semibold rounded-xl text-base hover:border-[#00ff88]/50 hover:text-[#00ff88] transition-all duration-200 w-full sm:w-auto"
+            className="px-8 py-4 border border-white/20 text-white font-semibold rounded-xl text-base hover:border-[#00ff88]/50 hover:text-[#00ff88] transition-all duration-200 w-full sm:w-auto backdrop-blur-sm bg-black/20"
           >
             Play Music Games →
           </a>
@@ -63,7 +79,7 @@ export default function HeroSection() {
           ].map((stat) => (
             <div key={stat.label} className="text-center">
               <div className="text-2xl sm:text-3xl font-black gradient-text">{stat.value}</div>
-              <div className="text-xs text-gray-500 mt-1">{stat.label}</div>
+              <div className="text-xs text-gray-400 mt-1">{stat.label}</div>
             </div>
           ))}
         </div>
