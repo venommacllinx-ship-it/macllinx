@@ -13,8 +13,10 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Next.js Template",
-  description: "A minimal Next.js starter template",
+  title: "Venom — Music Generation, Publishing & Games",
+  description:
+    "Venom is the ultimate music platform. Generate AI-powered music, publish your tracks, play music games, and build your own music website — all in one place.",
+  keywords: ["music generation", "music publishing", "music games", "web builder", "AI music", "venom"],
 };
 
 export default function RootLayout({
@@ -25,7 +27,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-[#0a0a0a] text-white`}
       >
         {children}
       </body>
