@@ -16,6 +16,7 @@ The template is a clean Next.js 16 starter with TypeScript and Tailwind CSS 4. I
 - [x] Recipe system for common features
 - [x] Updated logo to "VENOM DLS" with gradient icon and stacked text
 - [x] Updated hero background to hip-hop urban aesthetic (Unsplash concert photo, gold/amber tints, grain texture)
+- [x] Redesigned logo to black signature style: black rounded emblem with SVG V-bolt mark, white wordmark with tight tracking
 
 ## Current Structure
 
