@@ -19,10 +19,13 @@ export default function Header() {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2 group">
-            <div className="w-8 h-8 rounded-lg bg-[#00ff88] flex items-center justify-center pulse-glow">
-              <span className="text-black font-black text-sm">V</span>
+            <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-[#00ff88] to-[#00ccff] flex items-center justify-center pulse-glow shadow-lg shadow-[#00ff88]/30">
+              <span className="text-black font-black text-xs leading-none">DLS</span>
             </div>
-            <span className="text-xl font-black tracking-wider gradient-text">VENOM</span>
+            <div className="flex flex-col leading-none">
+              <span className="text-xl font-black tracking-widest gradient-text">VENOM</span>
+              <span className="text-[10px] font-bold tracking-[0.3em] text-[#00ff88]/70 uppercase">DLS</span>
+            </div>
           </Link>
 
           {/* Desktop Nav */}

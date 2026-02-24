@@ -1,35 +1,37 @@
 export default function HeroSection() {
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-16">
-      {/* XXXTentacion background image */}
+      {/* Hip-hop urban background — dark city/street art vibe */}
       <div
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
         style={{
           backgroundImage:
-            "url('https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/XXXTentacion_in_2017.jpg/800px-XXXTentacion_in_2017.jpg')",
+            "url('https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=1920&q=80')",
         }}
       />
 
-      {/* Dark overlay gradient — moody, atmospheric */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-[#0a0a0a]" />
-      <div className="absolute inset-0 bg-gradient-to-r from-[#0a0a0a]/80 via-transparent to-[#0a0a0a]/80" />
+      {/* Deep dark overlay for readability */}
+      <div className="absolute inset-0 bg-black/75" />
+      <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-[#0a0a0a]" />
 
-      {/* Purple/red tint overlay for XXX aesthetic */}
-      <div className="absolute inset-0 bg-gradient-to-br from-purple-900/20 via-transparent to-red-900/20" />
+      {/* Gold/amber hip-hop tint */}
+      <div className="absolute inset-0 bg-gradient-to-br from-yellow-900/25 via-transparent to-orange-900/20" />
 
-      {/* Background grid */}
+      {/* Graffiti-style spray paint glow spots */}
+      <div className="absolute top-1/3 left-1/5 w-80 h-80 bg-yellow-500/8 rounded-full blur-3xl" />
+      <div className="absolute bottom-1/3 right-1/5 w-96 h-96 bg-[#00ff88]/6 rounded-full blur-3xl" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-orange-500/5 rounded-full blur-3xl" />
+
+      {/* Subtle noise/grain texture overlay */}
       <div
-        className="absolute inset-0 opacity-5"
+        className="absolute inset-0 opacity-[0.03]"
         style={{
           backgroundImage:
-            "linear-gradient(rgba(0,255,136,0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(0,255,136,0.3) 1px, transparent 1px)",
-          backgroundSize: "60px 60px",
+            "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E\")",
+          backgroundRepeat: "repeat",
+          backgroundSize: "128px 128px",
         }}
       />
-
-      {/* Glow orbs */}
-      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-500/5 rounded-full blur-3xl" />
-      <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-[#00ccff]/5 rounded-full blur-3xl" />
 
       <div className="relative z-10 text-center px-4 max-w-5xl mx-auto">
         {/* Badge */}
