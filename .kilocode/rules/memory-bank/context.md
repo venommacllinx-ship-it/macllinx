@@ -21,6 +21,9 @@ The template is a clean Next.js 16 starter with TypeScript and Tailwind CSS 4. I
 - [x] Added Privacy Policy page (/privacy) with music-platform-specific content (data collection, AI music ownership, DMCA, user rights)
 - [x] Added Terms & Conditions page (/terms) with music platform terms (IP ownership, acceptable use, publishing, DMCA, subscriptions)
 - [x] Updated Footer to link to /privacy and /terms in both Company nav and bottom bar
+- [x] Added InspiredBySection (src/components/sections/InspiredBySection.tsx) featuring XXXTentacion as Venom's role model — includes portrait card, stats, full discography (17, ?, Skins, Bad Vibes Forever) with track listings, 12 notable singles grid, and legacy quote
+- [x] Updated AboutSection to include XXXTentacion role model callout card (purple accent)
+- [x] Added "#inspired-by" nav link ("X") to Header
 
 ## Current Structure
 
