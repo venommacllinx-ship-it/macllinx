@@ -52,13 +52,34 @@ export default function Footer() {
           <div>
             <h4 className="text-sm font-semibold text-white mb-4">Company</h4>
             <ul className="space-y-2">
-              {["About", "Blog", "Careers", "Contact", "Privacy Policy"].map((item) => (
-                <li key={item}>
-                  <a href="#" className="text-sm text-gray-500 hover:text-[#00ff88] transition-colors">
-                    {item}
-                  </a>
-                </li>
-              ))}
+              <li>
+                <a href="#about" className="text-sm text-gray-500 hover:text-[#00ff88] transition-colors">
+                  About
+                </a>
+              </li>
+              <li>
+                <a href="#" className="text-sm text-gray-500 hover:text-[#00ff88] transition-colors">
+                  Blog
+                </a>
+              </li>
+              <li>
+                <a href="#" className="text-sm text-gray-500 hover:text-[#00ff88] transition-colors">
+                  Careers
+                </a>
+              </li>
+              <li>
+                <a
+                  href="mailto:venommacllinx@gmail.com"
+                  className="text-sm text-gray-500 hover:text-[#00ff88] transition-colors"
+                >
+                  Contact
+                </a>
+              </li>
+              <li>
+                <a href="#" className="text-sm text-gray-500 hover:text-[#00ff88] transition-colors">
+                  Privacy Policy
+                </a>
+              </li>
             </ul>
           </div>
         </div>

@@ -6,6 +6,7 @@ import PublishSection from "@/components/sections/PublishSection";
 import GamesSection from "@/components/sections/GamesSection";
 import BuilderSection from "@/components/sections/BuilderSection";
 import CTASection from "@/components/sections/CTASection";
+import AboutSection from "@/components/sections/AboutSection";
 
 export default function Home() {
   return (
@@ -17,6 +18,7 @@ export default function Home() {
       <GamesSection />
       <BuilderSection />
       <CTASection />
+      <AboutSection />
       <Footer />
     </main>
   );

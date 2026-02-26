@@ -8,6 +8,7 @@ const navLinks = [
   { href: "#publish", label: "Publish" },
   { href: "#games", label: "Games" },
   { href: "#builder", label: "Web Builder" },
+  { href: "#about", label: "About" },
 ];
 
 export default function Header() {
