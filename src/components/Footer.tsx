@@ -76,9 +76,14 @@ export default function Footer() {
                 </a>
               </li>
               <li>
-                <a href="#" className="text-sm text-gray-500 hover:text-[#00ff88] transition-colors">
+                <Link href="/privacy" className="text-sm text-gray-500 hover:text-[#00ff88] transition-colors">
                   Privacy Policy
-                </a>
+                </Link>
+              </li>
+              <li>
+                <Link href="/terms" className="text-sm text-gray-500 hover:text-[#00ff88] transition-colors">
+                  Terms & Conditions
+                </Link>
               </li>
             </ul>
           </div>
@@ -86,11 +91,17 @@ export default function Footer() {
 
         <div className="border-t border-[#1a1a1a] pt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-xs text-gray-600">
-            © {new Date().getFullYear()} Venom. All rights reserved.
+            © {new Date().getFullYear()} Venom DLS. All rights reserved.
           </p>
-          <p className="text-xs text-gray-600">
-            Built with <span className="text-[#00ff88]">♪</span> for music creators everywhere
-          </p>
+          <div className="flex items-center gap-4">
+            <Link href="/privacy" className="text-xs text-gray-600 hover:text-[#00ff88] transition-colors">
+              Privacy Policy
+            </Link>
+            <span className="text-gray-700">·</span>
+            <Link href="/terms" className="text-xs text-gray-600 hover:text-[#00ff88] transition-colors">
+              Terms & Conditions
+            </Link>
+          </div>
         </div>
       </div>
     </footer>

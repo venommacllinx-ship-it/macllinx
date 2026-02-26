@@ -18,6 +18,9 @@ The template is a clean Next.js 16 starter with TypeScript and Tailwind CSS 4. I
 - [x] Updated hero background to hip-hop urban aesthetic (Unsplash concert photo, gold/amber tints, grain texture)
 - [x] Redesigned logo to black signature style: black rounded emblem with SVG V-bolt mark, white wordmark with tight tracking
 - [x] Added About section (src/components/sections/AboutSection.tsx) with company info, values cards, and contact email (venommacllinx@gmail.com); linked from Header nav and Footer
+- [x] Added Privacy Policy page (/privacy) with music-platform-specific content (data collection, AI music ownership, DMCA, user rights)
+- [x] Added Terms & Conditions page (/terms) with music platform terms (IP ownership, acceptable use, publishing, DMCA, subscriptions)
+- [x] Updated Footer to link to /privacy and /terms in both Company nav and bottom bar
 
 ## Current Structure
 
