@@ -7,6 +7,7 @@ import GamesSection from "@/components/sections/GamesSection";
 import BuilderSection from "@/components/sections/BuilderSection";
 import CTASection from "@/components/sections/CTASection";
 import AboutSection from "@/components/sections/AboutSection";
+import InspiredBySection from "@/components/sections/InspiredBySection";
 
 export default function Home() {
   return (
@@ -19,6 +20,7 @@ export default function Home() {
       <BuilderSection />
       <CTASection />
       <AboutSection />
+      <InspiredBySection />
       <Footer />
     </main>
   );

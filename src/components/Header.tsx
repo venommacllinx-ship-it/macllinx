@@ -9,6 +9,7 @@ const navLinks = [
   { href: "#games", label: "Games" },
   { href: "#builder", label: "Web Builder" },
   { href: "#about", label: "About" },
+  { href: "#inspired-by", label: "X" },
 ];
 
 export default function Header() {

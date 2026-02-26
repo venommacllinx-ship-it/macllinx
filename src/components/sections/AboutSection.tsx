@@ -23,10 +23,20 @@ export default function AboutSection() {
               competing in music games, or building your own music website — Venom gives you the tools
               to do it all in one place.
             </p>
-            <p className="text-gray-500 text-base leading-relaxed mb-8">
+            <p className="text-gray-500 text-base leading-relaxed mb-5">
               We believe music creation should be accessible to everyone. No studio. No expensive gear.
               Just your ideas and the power of AI to bring them to life.
             </p>
+            {/* Role model callout */}
+            <div className="flex items-center gap-3 p-4 rounded-xl border border-[#8b5cf6]/30 bg-[#8b5cf6]/5 mb-8">
+              <div className="w-9 h-9 rounded-lg bg-[#8b5cf6]/20 flex items-center justify-center flex-shrink-0 text-[#8b5cf6] font-black text-lg">
+                X
+              </div>
+              <div>
+                <p className="text-[10px] text-[#8b5cf6] uppercase tracking-widest font-semibold mb-0.5">Our Role Model</p>
+                <p className="text-sm font-bold text-white">XXXTentacion — raw emotion, no limits</p>
+              </div>
+            </div>
 
             {/* Contact */}
             <div className="flex items-center gap-3 p-4 rounded-xl border border-[#1a1a1a] bg-white/[0.02] hover:border-[#00ff88]/30 transition-colors duration-300 group w-fit">
