@@ -30,6 +30,10 @@ The template is a clean Next.js 16 starter with TypeScript and Tailwind CSS 4. I
 - [x] Added Subscription page (/subscription) with 5 pricing tiers ($20-$900): Starter, Producer, Artist, Label, Enterprise
 - [x] Added Pricing link to Header and Footer navigation
 - [x] Installed lucide-react for icons
+- [x] Integrated Lemon Squeezy for global tax compliance (VAT, GST, sales tax)
+- [x] Created Lemon Squeezy configuration at src/lib/lemonsqueezy.ts
+- [x] Added .env.example with Lemon Squeezy environment variables
+- [x] Updated subscription page with Lemon Squeezy checkout links and tax notice
 
 ## Current Structure
 

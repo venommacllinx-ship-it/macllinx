@@ -4,6 +4,7 @@ import { useState } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import VenomAI from "@/components/VenomAI";
+import { PRICING_VARIANTS, type PricingTier as LSTier } from "@/lib/lemonsqueezy";
 import {
   Zap,
   Music,
@@ -17,6 +18,8 @@ import {
   Globe,
   Shield,
   Star,
+  CreditCard,
+  Receipt,
 } from "lucide-react";
 
 interface PricingTier {
@@ -27,6 +30,10 @@ interface PricingTier {
   features: string[];
   highlighted?: boolean;
   color: string;
+  variantId: {
+    monthly: string;
+    yearly: string;
+  };
 }
 
 const pricingTiers: PricingTier[] = [
@@ -36,6 +43,7 @@ const pricingTiers: PricingTier[] = [
     description: "Perfect for beginners exploring music production",
     icon: <Zap className="w-6 h-6" />,
     color: "#00ff88",
+    variantId: PRICING_VARIANTS.starter,
     features: [
       "10 AI music generations/month",
       "Basic beat library access",
@@ -50,6 +58,7 @@ const pricingTiers: PricingTier[] = [
     description: "For serious producers ready to level up",
     icon: <Music className="w-6 h-6" />,
     color: "#00ccff",
+    variantId: PRICING_VARIANTS.producer,
     features: [
       "50 AI music generations/month",
       "Full beat & sample library",
@@ -66,6 +75,7 @@ const pricingTiers: PricingTier[] = [
     icon: <Mic2 className="w-6 h-6" />,
     color: "#ff0066",
     highlighted: true,
+    variantId: PRICING_VARIANTS.artist,
     features: [
       "Unlimited AI generations",
       "Premium sound library",
@@ -83,6 +93,7 @@ const pricingTiers: PricingTier[] = [
     description: "For independent labels managing multiple artists",
     icon: <Users className="w-6 h-6" />,
     color: "#ffaa00",
+    variantId: PRICING_VARIANTS.label,
     features: [
       "Everything in Artist",
       "5 artist sub-accounts",
@@ -101,6 +112,7 @@ const pricingTiers: PricingTier[] = [
     description: "Custom solutions for major operations",
     icon: <Crown className="w-6 h-6" />,
     color: "#aa00ff",
+    variantId: PRICING_VARIANTS.enterprise,
     features: [
       "Everything in Label",
       "Unlimited artist accounts",
@@ -115,6 +127,13 @@ const pricingTiers: PricingTier[] = [
     ],
   },
 ];
+
+// Get Lemon Squeezy checkout URL
+function getCheckoutUrl(variantId: string): string {
+  // Replace with your actual Lemon Squeezy store domain
+  const storeDomain = "venom.lemonsqueezy.com";
+  return `https://${storeDomain}/checkout/buy/${variantId}`;
+}
 
 export default function SubscriptionPage() {
   const [billingCycle, setBillingCycle] = useState<"monthly" | "yearly">("monthly");
@@ -235,15 +254,20 @@ export default function SubscriptionPage() {
                   </div>
 
                   {/* CTA Button */}
-                  <button
-                    className={`w-full py-3 rounded-xl font-semibold transition-all duration-300 mb-6 ${
+                  <a
+                    href={getCheckoutUrl(
+                      billingCycle === "monthly" ? tier.variantId.monthly : tier.variantId.yearly
+                    )}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`w-full py-3 rounded-xl font-semibold transition-all duration-300 mb-6 text-center block ${
                       tier.highlighted
                         ? "bg-[#00ff88] text-black hover:bg-[#00ff88]/90"
                         : "bg-white/10 text-white hover:bg-white/20 border border-white/20"
                     }`}
                   >
                     Get Started
-                  </button>
+                  </a>
 
                   {/* Features */}
                   <ul className="space-y-3">
@@ -336,21 +360,40 @@ export default function SubscriptionPage() {
         {/* Trust Badges */}
         <section className="px-4 sm:px-6 lg:px-8 mb-20">
           <div className="max-w-4xl mx-auto">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+            <div className="grid grid-cols-2 md:grid-cols-5 gap-6">
               {[
                 { icon: <Shield className="w-6 h-6" />, label: "Secure Payments" },
                 { icon: <Globe className="w-6 h-6" />, label: "Global Access" },
                 { icon: <Headphones className="w-6 h-6" />, label: "24/7 Support" },
                 { icon: <Radio className="w-6 h-6" />, label: "Instant Setup" },
+                { icon: <Receipt className="w-6 h-6" />, label: "Tax Included" },
               ].map((badge, idx) => (
                 <div
                   key={idx}
                   className="flex flex-col items-center gap-3 p-6 rounded-xl bg-white/5 border border-white/10"
                 >
                   <div className="text-[#00ff88]">{badge.icon}</div>
-                  <span className="text-white/80 font-medium">{badge.label}</span>
+                  <span className="text-white/80 font-medium text-sm text-center">{badge.label}</span>
                 </div>
               ))}
+            </div>
+            
+            {/* Tax Notice */}
+            <div className="mt-8 p-6 rounded-xl bg-[#00ff88]/5 border border-[#00ff88]/20">
+              <div className="flex items-start gap-4">
+                <div className="w-10 h-10 rounded-lg bg-[#00ff88]/10 flex items-center justify-center flex-shrink-0">
+                  <CreditCard className="w-5 h-5 text-[#00ff88]" />
+                </div>
+                <div>
+                  <h4 className="font-semibold text-white mb-2">Powered by Lemon Squeezy</h4>
+                  <p className="text-white/60 text-sm leading-relaxed">
+                    All prices shown are inclusive of VAT, GST, and sales tax where applicable. 
+                    We partner with Lemon Squeezy to handle global tax compliance, so you can 
+                    focus on your music while we handle the paperwork. No surprise charges, 
+                    ever.
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
         </section>
@@ -368,12 +411,18 @@ export default function SubscriptionPage() {
                 for personalized recommendations.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <button className="px-8 py-3 rounded-xl bg-[#00ff88] text-black font-semibold hover:bg-[#00ff88]/90 transition-all duration-300">
+                <a 
+                  href="/signup" 
+                  className="px-8 py-3 rounded-xl bg-[#00ff88] text-black font-semibold hover:bg-[#00ff88]/90 transition-all duration-300 text-center"
+                >
                   Start Free
-                </button>
-                <button className="px-8 py-3 rounded-xl bg-white/10 text-white font-semibold hover:bg-white/20 transition-all duration-300 border border-white/20">
+                </a>
+                <a 
+                  href="mailto:venommacllinx@gmail.com?subject=Enterprise%20Inquiry" 
+                  className="px-8 py-3 rounded-xl bg-white/10 text-white font-semibold hover:bg-white/20 transition-all duration-300 border border-white/20 text-center"
+                >
                   Contact Sales
-                </button>
+                </a>
               </div>
             </div>
           </div>
