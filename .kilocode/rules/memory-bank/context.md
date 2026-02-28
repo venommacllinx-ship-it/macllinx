@@ -24,6 +24,7 @@ The template is a clean Next.js 16 starter with TypeScript and Tailwind CSS 4. I
 - [x] Added InspiredBySection (src/components/sections/InspiredBySection.tsx) featuring XXXTentacion as Venom's role model — includes portrait card, stats, full discography (17, ?, Skins, Bad Vibes Forever) with track listings, 12 notable singles grid, and legacy quote
 - [x] Updated AboutSection to include XXXTentacion role model callout card (purple accent)
 - [x] Added "#inspired-by" nav link ("X") to Header
+- [x] Established Venom DLS as creator and owner of Venom; added www.venom.com references in AboutSection, Footer (brand area + copyright bar), layout metadata, and Terms page
 
 ## Current Structure
 
