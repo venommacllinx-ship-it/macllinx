@@ -15,7 +15,16 @@ export default function Footer() {
             </div>
             <p className="text-gray-500 text-sm leading-relaxed max-w-xs">
               The ultimate music platform. Generate, publish, play, and build — all powered by AI.
+              Created and owned by <span className="text-gray-400 font-semibold">Venom DLS</span>.
             </p>
+            <a
+              href="https://www.venom.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block mt-2 text-xs text-[#00ff88] hover:underline"
+            >
+              www.venom.com
+            </a>
             <div className="flex gap-4 mt-4">
               {["Twitter", "Discord", "YouTube"].map((social) => (
                 <a
@@ -91,7 +100,8 @@ export default function Footer() {
 
         <div className="border-t border-[#1a1a1a] pt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-xs text-gray-600">
-            © {new Date().getFullYear()} Venom DLS. All rights reserved.
+            © {new Date().getFullYear()} Venom DLS. All rights reserved. |{" "}
+            <a href="https://www.venom.com" target="_blank" rel="noopener noreferrer" className="hover:text-[#00ff88] transition-colors">www.venom.com</a>
           </p>
           <div className="flex items-center gap-4">
             <Link href="/privacy" className="text-xs text-gray-600 hover:text-[#00ff88] transition-colors">

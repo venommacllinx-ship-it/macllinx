@@ -89,7 +89,7 @@ export default function TermsPage() {
                 </div>
                 <div>
                   <h3 className="text-white font-semibold mb-2">Platform Content</h3>
-                  <p>All platform software, design, branding, and non-user content is owned by Venom DLS and protected by copyright law. You may not reproduce, distribute, or create derivative works without our written permission.</p>
+                  <p>All platform software, design, branding, and non-user content is created and owned by <strong>Venom DLS</strong> and protected by copyright law. The Venom platform is operated at <a href="https://www.venom.com" className="text-[#00ff88] hover:underline" target="_blank" rel="noopener noreferrer">www.venom.com</a>. You may not reproduce, distribute, or create derivative works without our written permission.</p>
                 </div>
               </div>
             </section>

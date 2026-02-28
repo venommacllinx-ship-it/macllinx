@@ -18,14 +18,15 @@ export default function AboutSection() {
               Who We Are
             </h2>
             <p className="text-gray-400 text-lg leading-relaxed mb-5">
-              Venom DLS is an AI-powered music platform built for creators who want to move fast.
+              <strong className="text-white">Venom DLS</strong> is the creator and owner of Venom — an AI-powered music platform built for creators who want to move fast.
               Whether you&apos;re generating beats from scratch, publishing your tracks to the world,
               competing in music games, or building your own music website — Venom gives you the tools
               to do it all in one place.
             </p>
             <p className="text-gray-500 text-base leading-relaxed mb-5">
               We believe music creation should be accessible to everyone. No studio. No expensive gear.
-              Just your ideas and the power of AI to bring them to life.
+              Just your ideas and the power of AI to bring them to life. Visit us at{" "}
+              <a href="https://www.venom.com" className="text-[#00ff88] hover:underline" target="_blank" rel="noopener noreferrer">www.venom.com</a>.
             </p>
             {/* Role model callout */}
             <div className="flex items-center gap-3 p-4 rounded-xl border border-[#8b5cf6]/30 bg-[#8b5cf6]/5 mb-8">

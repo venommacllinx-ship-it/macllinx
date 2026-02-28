@@ -13,10 +13,10 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Venom — Music Generation, Publishing & Games",
+  title: "Venom — Music Generation, Publishing & Games | www.venom.com",
   description:
-    "Venom is the ultimate music platform. Generate AI-powered music, publish your tracks, play music games, and build your own music website — all in one place.",
-  keywords: ["music generation", "music publishing", "music games", "web builder", "AI music", "venom"],
+    "Venom is the ultimate music platform created and owned by Venom DLS. Generate AI-powered music, publish your tracks, play music games, and build your own music website — all in one place at www.venom.com.",
+  keywords: ["music generation", "music publishing", "music games", "web builder", "AI music", "venom", "venom dls", "www.venom.com"],
 };
 
 export default function RootLayout({
