@@ -9,6 +9,7 @@ const navLinks = [
   { href: "#games", label: "Games" },
   { href: "#builder", label: "Web Builder" },
   { href: "/chat", label: "Chat" },
+  { href: "/subscription", label: "Pricing" },
   { href: "#about", label: "About" },
   { href: "#inspired-by", label: "X" },
 ];
