@@ -47,6 +47,7 @@ export default function Footer() {
                 { href: "#publish", label: "Music Publishing" },
                 { href: "#games", label: "Music Games" },
                 { href: "#builder", label: "Web Builder" },
+                { href: "/chat", label: "Venomous Chat" },
               ].map((item) => (
                 <li key={item.href}>
                   <Link href={item.href} className="text-sm text-gray-500 hover:text-[#00ff88] transition-colors">

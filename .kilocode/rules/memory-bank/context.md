@@ -25,6 +25,8 @@ The template is a clean Next.js 16 starter with TypeScript and Tailwind CSS 4. I
 - [x] Updated AboutSection to include XXXTentacion role model callout card (purple accent)
 - [x] Added "#inspired-by" nav link ("X") to Header
 - [x] Established Venom DLS as creator and owner of Venom; added www.venom.com references in AboutSection, Footer (brand area + copyright bar), layout metadata, and Terms page
+- [x] Added Venomous Chat feature: ChatSection component on homepage with live users preview, dedicated /chat page with real-time chat rooms
+- [x] Added Venom AI Assistant: Floating widget on all pages that helps users with music generation, publishing, chat, games, and web builder features
 
 ## Current Structure
 
@@ -33,6 +35,8 @@ The template is a clean Next.js 16 starter with TypeScript and Tailwind CSS 4. I
 | `src/app/page.tsx` | Home page | ✅ Ready |
 | `src/app/layout.tsx` | Root layout | ✅ Ready |
 | `src/app/globals.css` | Global styles | ✅ Ready |
+| `src/app/chat/page.tsx` | Venomous Chat page | ✅ Ready |
+| `src/components/VenomAI.tsx` | AI Assistant widget | ✅ Ready |
 | `.kilocode/` | AI context & recipes | ✅ Ready |
 
 ## Current Focus
