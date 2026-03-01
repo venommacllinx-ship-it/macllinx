@@ -10,6 +10,7 @@ const navLinks = [
   { href: "#publish", label: "Publish" },
   { href: "#games", label: "Games" },
   { href: "/leaderboard", label: "Leaderboard" },
+  { href: "/studio", label: "Studio" },
   { href: "#builder", label: "Web Builder" },
   { href: "/chat", label: "Chat" },
   { href: "/code", label: "Code" },

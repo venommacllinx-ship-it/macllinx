@@ -13,9 +13,9 @@ const features = [
     desc: "Blend multiple genres and styles to create something entirely unique to you.",
   },
   {
-    icon: "🔄",
-    title: "Infinite Variations",
-    desc: "Generate unlimited variations of any track until you find the perfect sound.",
+    icon: "🎧",
+    title: "DJ Studio",
+    desc: "Mix your tracks live with dual decks, EQ controls, crossfader, and real-time effects.",
   },
   {
     icon: "🎤",
