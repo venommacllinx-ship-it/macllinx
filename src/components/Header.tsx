@@ -3,7 +3,8 @@
 import Link from "next/link";
 import { useState } from "react";
 import { useSession, signOut } from "next-auth/react";
-import { User, LogOut } from "lucide-react";
+import { User, LogOut, Settings } from "lucide-react";
+import { TimeWeatherWidget } from "./TimeWeatherWidget";
 
 const navLinks = [
   { href: "#generate", label: "Generate" },
@@ -56,7 +57,7 @@ export default function Header() {
           </Link>
 
           {/* Desktop Nav */}
-          <nav className="hidden md:flex items-center gap-8">
+          <nav className="hidden lg:flex items-center gap-6">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
@@ -68,8 +69,22 @@ export default function Header() {
             ))}
           </nav>
 
+          {/* Time & Weather Widget - Desktop */}
+          <div className="hidden xl:flex items-center">
+            <TimeWeatherWidget />
+          </div>
+
           {/* Auth Buttons / User Profile */}
           <div className="hidden md:flex items-center gap-3">
+            {/* Settings Button */}
+            <Link
+              href="/settings"
+              className="p-2 text-gray-400 hover:text-[#00ff88] transition-colors"
+              title="Settings"
+            >
+              <Settings className="w-5 h-5" />
+            </Link>
+
             {isLoading ? (
               <div className="w-8 h-8 rounded-full bg-neutral-800 animate-pulse" />
             ) : isAuthenticated ? (
@@ -147,6 +162,20 @@ export default function Header() {
                 {link.label}
               </Link>
             ))}
+            
+            {/* Mobile Time & Weather Widget */}
+            <div className="py-4 border-t border-[#1a1a1a] mt-4">
+              <TimeWeatherWidget />
+            </div>
+            
+            {/* Mobile Settings Link */}
+            <Link
+              href="/settings"
+              className="block py-2 text-gray-400 hover:text-[#00ff88] transition-colors border-t border-[#1a1a1a] mt-4 pt-2"
+              onClick={() => setMenuOpen(false)}
+            >
+              Settings
+            </Link>
             
             {/* Mobile Auth */}
             <div className="mt-4 pt-4 border-t border-[#1a1a1a]">
