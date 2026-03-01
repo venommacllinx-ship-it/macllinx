@@ -18,6 +18,12 @@ const features = [
     desc: "Mix your tracks live with dual decks, EQ controls, crossfader, and real-time effects.",
   },
   {
+    icon: "🔊",
+    title: "Logo Music Generator",
+    desc: "Create unique audio logos, startup sounds, and brand jingles for your products and apps.",
+    link: "/logo-music",
+  },
+  {
     icon: "🎤",
     title: "Vocal Generation",
     desc: "Add AI-generated vocals, harmonies, and lyrics to your instrumental tracks.",
@@ -161,16 +167,37 @@ export default function GenerateSection() {
 
         {/* Features grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {features.map((f) => (
-            <div
-              key={f.title}
-              className="bg-[#111111] border border-[#1a1a1a] rounded-xl p-6 card-hover"
-            >
-              <div className="text-3xl mb-3">{f.icon}</div>
-              <h3 className="text-white font-bold mb-2">{f.title}</h3>
-              <p className="text-gray-500 text-sm leading-relaxed">{f.desc}</p>
-            </div>
-          ))}
+          {features.map((f) => {
+            const CardContent = (
+              <>
+                <div className="text-3xl mb-3">{f.icon}</div>
+                <h3 className="text-white font-bold mb-2">{f.title}</h3>
+                <p className="text-gray-500 text-sm leading-relaxed">{f.desc}</p>
+                {f.link && (
+                  <span className="inline-flex items-center gap-1 text-[#00ff88] text-sm mt-3 hover:underline">
+                    Try it →
+                  </span>
+                )}
+              </>
+            );
+
+            return f.link ? (
+              <a
+                key={f.title}
+                href={f.link}
+                className="bg-[#111111] border border-[#1a1a1a] rounded-xl p-6 card-hover block hover:border-[#00ff88]/30 transition-colors"
+              >
+                {CardContent}
+              </a>
+            ) : (
+              <div
+                key={f.title}
+                className="bg-[#111111] border border-[#1a1a1a] rounded-xl p-6 card-hover"
+              >
+                {CardContent}
+              </div>
+            );
+          })}
         </div>
       </div>
     </section>
