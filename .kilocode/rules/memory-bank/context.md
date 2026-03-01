@@ -34,6 +34,8 @@ The template is a clean Next.js 16 starter with TypeScript and Tailwind CSS 4. I
 - [x] Created Lemon Squeezy configuration at src/lib/lemonsqueezy.ts
 - [x] Added .env.example with Lemon Squeezy environment variables
 - [x] Updated subscription page with Lemon Squeezy checkout links and tax notice
+- [x] Added Code Studio page (/code) with Monaco Editor — interactive code editor supporting JavaScript, TypeScript, Python, HTML, CSS, JSON with live execution console
+- [x] Added Code link to Header and Footer navigation
 
 ## Current Structure
 
@@ -44,6 +46,7 @@ The template is a clean Next.js 16 starter with TypeScript and Tailwind CSS 4. I
 | `src/app/globals.css` | Global styles | ✅ Ready |
 | `src/app/chat/page.tsx` | Venomous Chat page | ✅ Ready |
 | `src/app/subscription/page.tsx` | Pricing/subscription page | ✅ Ready |
+| `src/app/code/page.tsx` | Code Studio with Monaco Editor | ✅ Ready |
 | `src/components/VenomAI.tsx` | AI Assistant widget | ✅ Ready |
 | `.kilocode/` | AI context & recipes | ✅ Ready |
 

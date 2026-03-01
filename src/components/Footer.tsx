@@ -48,6 +48,7 @@ export default function Footer() {
                 { href: "#games", label: "Music Games" },
                 { href: "#builder", label: "Web Builder" },
                 { href: "/chat", label: "Venomous Chat" },
+                { href: "/code", label: "Code Studio" },
                 { href: "/subscription", label: "Pricing" },
               ].map((item) => (
                 <li key={item.href}>
