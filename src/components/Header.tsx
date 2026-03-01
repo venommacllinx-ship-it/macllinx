@@ -2,6 +2,8 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { useSession, signOut } from "next-auth/react";
+import { User, LogOut } from "lucide-react";
 
 const navLinks = [
   { href: "#generate", label: "Generate" },
@@ -17,6 +19,9 @@ const navLinks = [
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const { data: session, status } = useSession();
+  const isLoading = status === "loading";
+  const isAuthenticated = status === "authenticated";
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-[#0a0a0a]/90 backdrop-blur-md border-b border-[#1a1a1a]">
@@ -60,14 +65,54 @@ export default function Header() {
             ))}
           </nav>
 
-          {/* CTA */}
+          {/* Auth Buttons / User Profile */}
           <div className="hidden md:flex items-center gap-3">
-            <Link
-              href="#generate"
-              className="px-4 py-2 text-sm font-semibold text-black bg-[#00ff88] rounded-lg hover:bg-[#00cc6e] transition-colors duration-200 glow-green"
-            >
-              Get Started
-            </Link>
+            {isLoading ? (
+              <div className="w-8 h-8 rounded-full bg-neutral-800 animate-pulse" />
+            ) : isAuthenticated ? (
+              <>
+                {/* User Profile */}
+                <div className="flex items-center gap-3">
+                  {session.user?.image ? (
+                    <img
+                      src={session.user.image}
+                      alt={session.user.name || "User"}
+                      className="w-8 h-8 rounded-full border border-neutral-700"
+                    />
+                  ) : (
+                    <div className="w-8 h-8 rounded-full bg-neutral-800 border border-neutral-700 flex items-center justify-center">
+                      <User className="w-4 h-4 text-neutral-400" />
+                    </div>
+                  )}
+                  <span className="text-sm text-gray-300 hidden lg:block">
+                    {session.user?.name?.split(" ")[0] || "User"}
+                  </span>
+                  <button
+                    onClick={() => signOut({ callbackUrl: "/" })}
+                    className="p-2 text-gray-400 hover:text-red-400 transition-colors"
+                    title="Sign out"
+                  >
+                    <LogOut className="w-4 h-4" />
+                  </button>
+                </div>
+              </>
+            ) : (
+              <>
+                {/* Login / Sign Up */}
+                <Link
+                  href="/login"
+                  className="text-sm text-gray-400 hover:text-white transition-colors duration-200 font-medium"
+                >
+                  Log in
+                </Link>
+                <Link
+                  href="/signup"
+                  className="px-4 py-2 text-sm font-semibold text-black bg-[#00ff88] rounded-lg hover:bg-[#00cc6e] transition-colors duration-200 glow-green"
+                >
+                  Get Started
+                </Link>
+              </>
+            )}
           </div>
 
           {/* Mobile menu button */}
@@ -99,13 +144,57 @@ export default function Header() {
                 {link.label}
               </Link>
             ))}
-            <Link
-              href="#generate"
-              className="mt-3 block text-center px-4 py-2 text-sm font-semibold text-black bg-[#00ff88] rounded-lg"
-              onClick={() => setMenuOpen(false)}
-            >
-              Get Started
-            </Link>
+            
+            {/* Mobile Auth */}
+            <div className="mt-4 pt-4 border-t border-[#1a1a1a]">
+              {isAuthenticated ? (
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    {session.user?.image ? (
+                      <img
+                        src={session.user.image}
+                        alt={session.user.name || "User"}
+                        className="w-8 h-8 rounded-full border border-neutral-700"
+                      />
+                    ) : (
+                      <div className="w-8 h-8 rounded-full bg-neutral-800 border border-neutral-700 flex items-center justify-center">
+                        <User className="w-4 h-4 text-neutral-400" />
+                      </div>
+                    )}
+                    <span className="text-sm text-gray-300">
+                      {session.user?.name || "User"}
+                    </span>
+                  </div>
+                  <button
+                    onClick={() => {
+                      signOut({ callbackUrl: "/" });
+                      setMenuOpen(false);
+                    }}
+                    className="flex items-center gap-2 text-sm text-red-400 hover:text-red-300"
+                  >
+                    <LogOut className="w-4 h-4" />
+                    Sign out
+                  </button>
+                </div>
+              ) : (
+                <div className="flex flex-col gap-2">
+                  <Link
+                    href="/login"
+                    className="block text-center py-2 text-gray-400 hover:text-white transition-colors"
+                    onClick={() => setMenuOpen(false)}
+                  >
+                    Log in
+                  </Link>
+                  <Link
+                    href="/signup"
+                    className="block text-center px-4 py-2 text-sm font-semibold text-black bg-[#00ff88] rounded-lg"
+                    onClick={() => setMenuOpen(false)}
+                  >
+                    Get Started
+                  </Link>
+                </div>
+              )}
+            </div>
           </div>
         )}
       </div>
