@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { NetworkStatus } from "@/components/NetworkStatus";
 import { Providers } from "@/components/Providers";
+import { AudioProvider } from "@/components/AudioPlayer";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -31,9 +32,11 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-[#0a0a0a] text-white`}
       >
-        <Providers>
-          <NetworkStatus>{children}</NetworkStatus>
-        </Providers>
+        <AudioProvider>
+          <Providers>
+            <NetworkStatus>{children}</NetworkStatus>
+          </Providers>
+        </AudioProvider>
       </body>
     </html>
   );
