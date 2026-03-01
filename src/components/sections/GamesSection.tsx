@@ -119,6 +119,16 @@ export default function GamesSection() {
 
           {/* Leaderboard */}
           <div className="bg-[#111111] border border-[#1a1a1a] rounded-xl p-6">
+            {/* Prize Pool Banner */}
+            <div className="mb-6 p-4 bg-gradient-to-r from-green-500/20 to-emerald-500/20 border border-green-500/30 rounded-xl">
+              <div className="flex items-center gap-2 text-green-400 text-sm font-medium mb-1">
+                <span>🏆</span>
+                <span>Monthly Prize Pool</span>
+              </div>
+              <p className="text-3xl font-bold text-white">$200</p>
+              <p className="text-xs text-gray-400 mt-1">Top 10 players win cash prizes!</p>
+            </div>
+
             <h3 className="text-white font-bold mb-1">Global Leaderboard</h3>
             <p className="text-xs text-gray-500 mb-6">Top players this week</p>
             <div className="space-y-3">
@@ -137,9 +147,12 @@ export default function GamesSection() {
                 </div>
               ))}
             </div>
-            <button className="w-full mt-6 py-2.5 border border-[#1a1a1a] text-gray-400 text-sm rounded-lg hover:border-[#00ff88]/30 hover:text-[#00ff88] transition-colors">
+            <a
+              href="/leaderboard"
+              className="w-full mt-6 py-2.5 border border-[#1a1a1a] text-gray-400 text-sm rounded-lg hover:border-[#00ff88]/30 hover:text-[#00ff88] transition-colors block text-center"
+            >
               View Full Leaderboard →
-            </button>
+            </a>
 
             {/* XP Progress */}
             <div className="mt-6 p-4 bg-[#0a0a0a] rounded-lg">
