@@ -11,6 +11,7 @@ const navLinks = [
   { href: "#games", label: "Games" },
   { href: "/leaderboard", label: "Leaderboard" },
   { href: "/studio", label: "Studio" },
+  { href: "/browser", label: "Browser" },
   { href: "#builder", label: "Web Builder" },
   { href: "/chat", label: "Chat" },
   { href: "/code", label: "Code" },

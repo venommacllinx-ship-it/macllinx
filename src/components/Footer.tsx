@@ -48,6 +48,7 @@ export default function Footer() {
                 { href: "#games", label: "Music Games" },
                 { href: "/leaderboard", label: "Leaderboard" },
                 { href: "/studio", label: "DJ Studio" },
+                { href: "/browser", label: "Venom Browser" },
                 { href: "#builder", label: "Web Builder" },
                 { href: "/chat", label: "Venomous Chat" },
                 { href: "/code", label: "Code Studio" },
