@@ -45,9 +45,10 @@ const INITIAL_BOOKMARKS: Bookmark[] = [
   { id: "1", title: "Venom", url: "https://venom.com", icon: "🎵" },
   { id: "2", title: "YouTube", url: "https://youtube.com", icon: "📺" },
   { id: "3", title: "TikTok", url: "https://tiktok.com", icon: "🎭" },
-  { id: "4", title: "Spotify", url: "https://spotify.com", icon: "🎧" },
-  { id: "5", title: "SoundCloud", url: "https://soundcloud.com", icon: "☁️" },
-  { id: "6", title: "Google", url: "https://google.com", icon: "🔍" },
+  { id: "4", title: "Gmail", url: "https://gmail.com", icon: "📧" },
+  { id: "5", title: "Spotify", url: "https://spotify.com", icon: "🎧" },
+  { id: "6", title: "SoundCloud", url: "https://soundcloud.com", icon: "☁️" },
+  { id: "7", title: "Google", url: "https://google.com", icon: "🔍" },
 ];
 
 const HOMEPAGE_URL = "about:blank";
