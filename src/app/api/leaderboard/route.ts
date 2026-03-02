@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { db, gameScores, users, leaderboardPeriods, monthlyRankings } from "@/db";
 import { desc, eq, and, gte, lt, sql } from "drizzle-orm";
 import { auth } from "@/lib/auth";
+import { logger } from "@/lib/logger";
 
 // GET /api/leaderboard - Get current leaderboard
 export async function GET() {
@@ -70,7 +71,7 @@ export async function GET() {
       totalParticipants: count,
     });
   } catch (error) {
-    console.error("Leaderboard error:", error);
+    logger.error("Failed to fetch leaderboard", error as Error);
     return NextResponse.json(
       { success: false, error: "Failed to fetch leaderboard" },
       { status: 500 }
@@ -80,6 +81,9 @@ export async function GET() {
 
 // POST /api/leaderboard/score - Submit a new score
 export async function POST(request: NextRequest) {
+  let gameType: string | undefined;
+  let score: number | undefined;
+
   try {
     const session = await auth();
     
@@ -90,7 +94,9 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const { gameType, score } = await request.json();
+    const body = await request.json();
+    gameType = body.gameType;
+    score = body.score;
 
     if (!gameType || typeof score !== "number") {
       return NextResponse.json(
@@ -125,7 +131,7 @@ export async function POST(request: NextRequest) {
       message: "Score submitted successfully",
     });
   } catch (error) {
-    console.error("Score submission error:", error);
+    logger.error("Failed to submit score", error as Error, { gameType, score });
     return NextResponse.json(
       { success: false, error: "Failed to submit score" },
       { status: 500 }
