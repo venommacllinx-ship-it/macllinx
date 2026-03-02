@@ -45,6 +45,8 @@ The template is a clean Next.js 16 starter with TypeScript and Tailwind CSS 4. I
 - [x] Created server logging utility (src/lib/logger.ts): structured logging with debug/info/warn/error levels, API request/response logging helpers
 - [x] Created request logging middleware (src/middleware.ts): logs all incoming requests with method, path, duration, and response status
 - [x] Updated API routes to use logger: leaderboard route now uses structured logging for errors
+- [x] Fixed ClientFetchError: Updated SessionProvider with refetchInterval, refetchOnWindowFocus=false, and refetchWhenOffline=false
+- [x] Simplified middleware logging to avoid circular dependencies and reduce console noise
 
 ## Current Structure
 

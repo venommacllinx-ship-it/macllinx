@@ -1,31 +1,28 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import { logger } from "./lib/logger";
 
 export function middleware(request: NextRequest) {
   const start = Date.now();
   const url = request.nextUrl;
 
-  // Log incoming request
-  logger.info(`→ ${request.method} ${url.pathname}${url.search}`, {
-    method: request.method,
-    path: url.pathname,
-    userAgent: request.headers.get("user-agent")?.slice(0, 100),
-  });
+  // Skip logging for static assets and _next internal routes to reduce noise
+  if (url.pathname.startsWith("/_next") || url.pathname.startsWith("/favicon")) {
+    return NextResponse.next();
+  }
 
   // Continue to the route
   const response = NextResponse.next();
 
-  // Add response time header and log
+  // Add response time header
   const duration = Date.now() - start;
   response.headers.set("X-Response-Time", `${duration}ms`);
 
-  logger.info(`← ${request.method} ${url.pathname} - ${response.status} (${duration}ms)`, {
-    method: request.method,
-    path: url.pathname,
-    status: response.status,
-    durationMs: duration,
-  });
+  // Only log in development or if explicitly enabled
+  if (process.env.NODE_ENV === "development" || process.env.LOG_REQUESTS === "true") {
+    // Use console instead of logger to avoid potential circular dependencies
+    // eslint-disable-next-line no-console
+    console.log(`[${request.method}] ${url.pathname} - ${response.status} (${duration}ms)`);
+  }
 
   return response;
 }
