@@ -4,7 +4,6 @@ import Link from "next/link";
 import { useState } from "react";
 import { useSession, signOut } from "next-auth/react";
 import { User, LogOut, Settings } from "lucide-react";
-import { TimeWeatherWidget } from "./TimeWeatherWidget";
 
 const navLinks = [
   { href: "#generate", label: "Generate" },
@@ -69,11 +68,6 @@ export default function Header() {
               </Link>
             ))}
           </nav>
-
-          {/* Time & Weather Widget - Desktop */}
-          <div className="hidden xl:flex items-center">
-            <TimeWeatherWidget />
-          </div>
 
           {/* Auth Buttons / User Profile */}
           <div className="hidden md:flex items-center gap-3">
@@ -163,11 +157,6 @@ export default function Header() {
                 {link.label}
               </Link>
             ))}
-            
-            {/* Mobile Time & Weather Widget */}
-            <div className="py-4 border-t border-[#1a1a1a] mt-4">
-              <TimeWeatherWidget />
-            </div>
             
             {/* Mobile Settings Link */}
             <Link
