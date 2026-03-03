@@ -1,18 +1,13 @@
 import NextAuth from "next-auth";
-import Google from "next-auth/providers/google";
 
+// Simple demo auth without external providers or database
 export const {
   handlers: { GET, POST },
   auth,
   signIn,
   signOut,
 } = NextAuth({
-  providers: [
-    Google({
-      clientId: process.env.GOOGLE_CLIENT_ID!,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
-    }),
-  ],
+  providers: [],
   pages: {
     signIn: "/login",
     error: "/login",
@@ -24,11 +19,9 @@ export const {
       }
       return session;
     },
-    async jwt({ token, user }) {
-      if (user) {
-        token.sub = user.id;
-      }
-      return token;
-    },
+  },
+  // Use JWT strategy without database
+  session: {
+    strategy: "jwt",
   },
 });

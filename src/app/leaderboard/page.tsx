@@ -1,10 +1,5 @@
-import { db, gameScores, users, leaderboardPeriods, monthlyRankings } from "@/db";
-import { desc, eq, and, gte, lt, sql } from "drizzle-orm";
 import { Trophy, Medal, Crown, Gamepad2, DollarSign, Calendar, Users } from "lucide-react";
 import Link from "next/link";
-
-// Force dynamic rendering to avoid static generation database errors
-export const dynamic = 'force-dynamic';
 
 // Prize distribution for top 10 players
 const PRIZE_DISTRIBUTION = [
@@ -20,81 +15,19 @@ const PRIZE_DISTRIBUTION = [
   { rank: 10, prize: 1 },
 ];
 
-async function getCurrentLeaderboard() {
-  const now = new Date();
-  const currentYear = now.getFullYear();
-  const currentMonth = now.getMonth() + 1;
-
-  // Get or create current period
-  let period = await db.query.leaderboardPeriods.findFirst({
-    where: and(
-      eq(leaderboardPeriods.year, currentYear),
-      eq(leaderboardPeriods.month, currentMonth)
-    ),
-  });
-
-  if (!period) {
-    const startDate = new Date(currentYear, currentMonth - 1, 1);
-    const endDate = new Date(currentYear, currentMonth, 0);
-    
-    const result = await db.insert(leaderboardPeriods).values({
-      year: currentYear,
-      month: currentMonth,
-      startDate,
-      endDate,
-      prizePool: 200,
-      isActive: true,
-    }).returning();
-    
-    period = result[0];
-  }
-
-  // Get top scores with user info
-  const scores = await db
-    .select({
-      userId: gameScores.userId,
-      name: users.name,
-      email: users.email,
-      image: users.image,
-      totalScore: sql<number>`SUM(${gameScores.score})`.as("total_score"),
-      gamesPlayed: sql<number>`COUNT(*)`.as("games_played"),
-    })
-    .from(gameScores)
-    .innerJoin(users, eq(gameScores.userId, users.id))
-    .where(and(
-      gte(gameScores.playedAt, period.startDate),
-      lt(gameScores.playedAt, period.endDate)
-    ))
-    .groupBy(gameScores.userId, users.name, users.email, users.image)
-    .orderBy(desc(sql`total_score`))
-    .limit(20);
-
-  // Map with ranks and prizes
-  const rankedScores = scores.map((score, index) => {
-    const rank = index + 1;
-    const prizeInfo = PRIZE_DISTRIBUTION.find(p => p.rank === rank);
-    return {
-      ...score,
-      rank,
-      prize: prizeInfo?.prize || 0,
-    };
-  });
-
-  // Get total participants
-  const [{ count }] = await db
-    .select({ count: sql<number>`COUNT(DISTINCT ${gameScores.userId})` })
-    .from(gameScores)
-    .where(and(
-      gte(gameScores.playedAt, period.startDate),
-      lt(gameScores.playedAt, period.endDate)
-    ));
-
-  return {
-    period,
-    scores: rankedScores,
-    totalParticipants: count,
-  };
-}
+// Mock leaderboard data
+const MOCK_SCORES = [
+  { userId: "1", name: "RhythmMaster", email: "player1@example.com", image: null, totalScore: 12500, gamesPlayed: 45, rank: 1, prize: 80 },
+  { userId: "2", name: "BeatKing", email: "player2@example.com", image: null, totalScore: 11200, gamesPlayed: 38, rank: 2, prize: 50 },
+  { userId: "3", name: "MusicQueen", email: "player3@example.com", image: null, totalScore: 10800, gamesPlayed: 42, rank: 3, prize: 30 },
+  { userId: "4", name: "GrooveStar", email: "player4@example.com", image: null, totalScore: 9500, gamesPlayed: 35, rank: 4, prize: 15 },
+  { userId: "5", name: "TempoHero", email: "player5@example.com", image: null, totalScore: 8900, gamesPlayed: 31, rank: 5, prize: 10 },
+  { userId: "6", name: "NoteNinja", email: "player6@example.com", image: null, totalScore: 8200, gamesPlayed: 28, rank: 6, prize: 5 },
+  { userId: "7", name: "MelodyPro", email: "player7@example.com", image: null, totalScore: 7800, gamesPlayed: 26, rank: 7, prize: 4 },
+  { userId: "8", name: "BeatDropper", email: "player8@example.com", image: null, totalScore: 7200, gamesPlayed: 24, rank: 8, prize: 3 },
+  { userId: "9", name: "VibeMaster", email: "player9@example.com", image: null, totalScore: 6500, gamesPlayed: 22, rank: 9, prize: 2 },
+  { userId: "10", name: "SoundWave", email: "player10@example.com", image: null, totalScore: 5800, gamesPlayed: 20, rank: 10, prize: 1 },
+];
 
 function getRankIcon(rank: number) {
   if (rank === 1) return <Crown className="w-6 h-6 text-yellow-400" />;
@@ -110,12 +43,13 @@ function getRankStyle(rank: number) {
   return "bg-zinc-900/50 border-zinc-700";
 }
 
-export default async function LeaderboardPage() {
-  const { period, scores, totalParticipants } = await getCurrentLeaderboard();
-  
-  const monthName = new Date(period.year, period.month - 1).toLocaleString("default", { month: "long" });
+export default function LeaderboardPage() {
   const now = new Date();
-  const daysRemaining = Math.ceil((period.endDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
+  const monthName = now.toLocaleString("default", { month: "long" });
+  const year = now.getFullYear();
+  const daysRemaining = 30 - now.getDate();
+  const prizePool = 200;
+  const totalParticipants = 156;
 
   return (
     <main className="min-h-screen bg-zinc-950 text-white pt-24 pb-16">
@@ -145,7 +79,7 @@ export default async function LeaderboardPage() {
                 <DollarSign className="w-5 h-5" />
                 <span className="text-sm font-medium uppercase tracking-wider">Prize Pool</span>
               </div>
-              <p className="text-4xl font-bold text-white">${period.prizePool}</p>
+              <p className="text-4xl font-bold text-white">${prizePool}</p>
             </div>
             <div>
               <div className="flex items-center justify-center gap-2 text-blue-400 mb-2">
@@ -195,84 +129,45 @@ export default async function LeaderboardPage() {
         <div className="space-y-3">
           <h2 className="text-xl font-semibold text-white mb-4">Current Standings</h2>
           
-          {scores.length === 0 ? (
-            <div className="text-center py-16 bg-zinc-900/50 rounded-2xl border border-zinc-800">
-              <Gamepad2 className="w-16 h-16 text-zinc-600 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold text-white mb-2">No Games Played Yet</h3>
-              <p className="text-zinc-400 mb-6">Be the first to play and claim the top spot!</p>
-              <Link
-                href="/games"
-                className="inline-flex items-center gap-2 bg-green-500 hover:bg-green-600 text-black font-semibold px-6 py-3 rounded-full transition-colors"
-              >
-                <Gamepad2 className="w-5 h-5" />
-                Play Now
-              </Link>
-            </div>
-          ) : (
-            scores.map((player) => (
-              <div
-                key={player.userId}
-                className={`flex items-center gap-4 p-4 rounded-xl border ${getRankStyle(player.rank)} transition-all hover:scale-[1.01]`}
-              >
-                <div className="flex items-center justify-center w-12">
-                  {getRankIcon(player.rank)}
+          {MOCK_SCORES.map((player) => (
+            <div
+              key={player.userId}
+              className={`flex items-center gap-4 p-4 rounded-xl border ${getRankStyle(player.rank)} transition-all hover:scale-[1.01]`}
+            >
+              <div className="flex items-center justify-center w-12">
+                {getRankIcon(player.rank)}
+              </div>
+              
+              <div className="flex items-center gap-4 flex-1">
+                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center text-black font-bold text-lg">
+                  {player.name[0].toUpperCase()}
                 </div>
                 
-                <div className="flex items-center gap-4 flex-1">
-                  {player.image ? (
-                    <img
-                      src={player.image}
-                      alt={player.name || "Player"}
-                      className="w-12 h-12 rounded-full border-2 border-zinc-700"
-                    />
-                  ) : (
-                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center text-black font-bold text-lg">
-                      {(player.name || player.email || "?")[0].toUpperCase()}
-                    </div>
-                  )}
-                  
-                  <div className="flex-1">
-                    <p className="font-semibold text-white">{player.name || player.email?.split("@")[0] || "Anonymous"}</p>
-                    <p className="text-sm text-zinc-400">{player.gamesPlayed} games played</p>
-                  </div>
-                </div>
-                
-                <div className="text-right">
-                  <p className="text-2xl font-bold text-white">{player.totalScore.toLocaleString()}</p>
-                  {player.prize > 0 && (
-                    <p className="text-sm text-green-400 font-medium">${player.prize} prize</p>
-                  )}
+                <div className="flex-1">
+                  <p className="font-semibold text-white">{player.name}</p>
+                  <p className="text-sm text-zinc-400">{player.gamesPlayed} games played</p>
                 </div>
               </div>
-            ))
-          )}
+              
+              <div className="text-right">
+                <p className="text-2xl font-bold text-white">{player.totalScore.toLocaleString()}</p>
+                {player.prize > 0 && (
+                  <p className="text-sm text-green-400 font-medium">${player.prize} prize</p>
+                )}
+              </div>
+            </div>
+          ))}
         </div>
 
-        {/* How to Play */}
-        <div className="mt-16 grid md:grid-cols-3 gap-6">
-          <div className="bg-zinc-900/50 border border-zinc-800 rounded-xl p-6">
-            <div className="w-12 h-12 bg-green-500/20 rounded-xl flex items-center justify-center mb-4">
-              <Gamepad2 className="w-6 h-6 text-green-400" />
-            </div>
-            <h3 className="text-lg font-semibold text-white mb-2">1. Play Games</h3>
-            <p className="text-zinc-400">Compete in rhythm challenges, beat-matching, and lyric quizzes to earn points.</p>
-          </div>
-          
-          <div className="bg-zinc-900/50 border border-zinc-800 rounded-xl p-6">
-            <div className="w-12 h-12 bg-blue-500/20 rounded-xl flex items-center justify-center mb-4">
-              <Trophy className="w-6 h-6 text-blue-400" />
-            </div>
-            <h3 className="text-lg font-semibold text-white mb-2">2. Climb the Ranks</h3>
-            <p className="text-zinc-400">Your highest scores each month determine your ranking on the leaderboard.</p>
-          </div>
-          
-          <div className="bg-zinc-900/50 border border-zinc-800 rounded-xl p-6">
-            <div className="w-12 h-12 bg-yellow-500/20 rounded-xl flex items-center justify-center mb-4">
-              <DollarSign className="w-6 h-6 text-yellow-400" />
-            </div>
-            <h3 className="text-lg font-semibold text-white mb-2">3. Win Prizes</h3>
-            <p className="text-zinc-400">Top 10 players receive cash prizes distributed automatically via Lemon Squeezy.</p>
-          </div>
+        {/* CTA */}
+        <div className="mt-12 text-center">
+          <Link
+            href="/games"
+            className="inline-flex items-center gap-2 bg-green-500 hover:bg-green-600 text-black font-semibold px-8 py-4 rounded-full transition-colors text-lg"
+          >
+            <Gamepad2 className="w-5 h-5" />
+            Play Games & Climb the Ranks
+          </Link>
         </div>
       </div>
     </main>

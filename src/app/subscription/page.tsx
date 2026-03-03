@@ -4,7 +4,6 @@ import { useState } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import VenomAI from "@/components/VenomAI";
-import { PRICING_VARIANTS, type PricingTier as LSTier } from "@/lib/lemonsqueezy";
 import {
   Zap,
   Music,
@@ -30,10 +29,6 @@ interface PricingTier {
   features: string[];
   highlighted?: boolean;
   color: string;
-  variantId: {
-    monthly: string;
-    yearly: string;
-  };
 }
 
 const pricingTiers: PricingTier[] = [
@@ -43,7 +38,6 @@ const pricingTiers: PricingTier[] = [
     description: "Perfect for beginners exploring music production",
     icon: <Zap className="w-6 h-6" />,
     color: "#00ff88",
-    variantId: PRICING_VARIANTS.starter,
     features: [
       "10 AI music generations/month",
       "Basic beat library access",
@@ -58,7 +52,6 @@ const pricingTiers: PricingTier[] = [
     description: "For serious producers ready to level up",
     icon: <Music className="w-6 h-6" />,
     color: "#00ccff",
-    variantId: PRICING_VARIANTS.producer,
     features: [
       "50 AI music generations/month",
       "Full beat & sample library",
@@ -75,7 +68,6 @@ const pricingTiers: PricingTier[] = [
     icon: <Mic2 className="w-6 h-6" />,
     color: "#ff0066",
     highlighted: true,
-    variantId: PRICING_VARIANTS.artist,
     features: [
       "Unlimited AI generations",
       "Premium sound library",
@@ -93,7 +85,6 @@ const pricingTiers: PricingTier[] = [
     description: "For independent labels managing multiple artists",
     icon: <Users className="w-6 h-6" />,
     color: "#ffaa00",
-    variantId: PRICING_VARIANTS.label,
     features: [
       "Everything in Artist",
       "5 artist sub-accounts",
@@ -112,7 +103,6 @@ const pricingTiers: PricingTier[] = [
     description: "Custom solutions for major operations",
     icon: <Crown className="w-6 h-6" />,
     color: "#aa00ff",
-    variantId: PRICING_VARIANTS.enterprise,
     features: [
       "Everything in Label",
       "Unlimited artist accounts",
@@ -127,13 +117,6 @@ const pricingTiers: PricingTier[] = [
     ],
   },
 ];
-
-// Get Lemon Squeezy checkout URL
-function getCheckoutUrl(variantId: string): string {
-  // Replace with your actual Lemon Squeezy store domain
-  const storeDomain = "venom.lemonsqueezy.com";
-  return `https://${storeDomain}/checkout/buy/${variantId}`;
-}
 
 export default function SubscriptionPage() {
   const [billingCycle, setBillingCycle] = useState<"monthly" | "yearly">("monthly");
@@ -254,20 +237,16 @@ export default function SubscriptionPage() {
                   </div>
 
                   {/* CTA Button */}
-                  <a
-                    href={getCheckoutUrl(
-                      billingCycle === "monthly" ? tier.variantId.monthly : tier.variantId.yearly
-                    )}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={`w-full py-3 rounded-xl font-semibold transition-all duration-300 mb-6 text-center block ${
+                  <button
+                    className={`w-full py-3 rounded-xl font-semibold transition-all duration-300 mb-6 ${
                       tier.highlighted
                         ? "bg-[#00ff88] text-black hover:bg-[#00ff88]/90"
                         : "bg-white/10 text-white hover:bg-white/20 border border-white/20"
                     }`}
+                    onClick={() => alert("Coming soon! Subscribe functionality will be available shortly.")}
                   >
                     Get Started
-                  </a>
+                  </button>
 
                   {/* Features */}
                   <ul className="space-y-3">
@@ -298,132 +277,47 @@ export default function SubscriptionPage() {
               <table className="w-full">
                 <thead>
                   <tr className="border-b border-white/10">
-                    <th className="text-left py-4 px-4 text-white/60 font-medium">
-                      Feature
-                    </th>
-                    <th className="text-center py-4 px-4 text-white font-medium">
-                      Starter
-                    </th>
-                    <th className="text-center py-4 px-4 text-white font-medium">
-                      Producer
-                    </th>
-                    <th className="text-center py-4 px-4 text-[#00ff88] font-medium bg-[#00ff88]/5">
-                      Artist
-                    </th>
-                    <th className="text-center py-4 px-4 text-white font-medium">
-                      Label
-                    </th>
-                    <th className="text-center py-4 px-4 text-white font-medium">
-                      Enterprise
-                    </th>
+                    <th className="text-left py-4 px-4 text-white/60 font-medium">Feature</th>
+                    {pricingTiers.map((tier) => (
+                      <th key={tier.name} className="text-center py-4 px-4 text-white font-semibold">
+                        {tier.name}
+                      </th>
+                    ))}
                   </tr>
                 </thead>
                 <tbody>
-                  {[
-                    { feature: "AI Generations", values: ["10/mo", "50/mo", "Unlimited", "Unlimited", "Unlimited"] },
-                    { feature: "Sound Quality", values: ["MP3", "WAV + MP3", "Studio", "Studio", "Studio +"] },
-                    { feature: "Distribution", values: [false, false, true, true, true] },
-                    { feature: "Collaborations", values: ["Basic", "2 projects", "10 projects", "50 projects", "Unlimited"] },
-                    { feature: "Support", values: ["Email", "Priority", "Priority", "Account Manager", "24/7 Phone"] },
-                    { feature: "Analytics", values: ["Basic", "Basic", "Advanced", "Full Suite", "Custom"] },
-                    { feature: "API Access", values: [false, false, false, true, true] },
-                    { feature: "White Label", values: [false, false, false, false, true] },
-                  ].map((row, idx) => (
-                    <tr key={idx} className="border-b border-white/5">
-                      <td className="py-4 px-4 text-white/80">{row.feature}</td>
-                      {row.values.map((value, vidx) => (
-                        <td
-                          key={vidx}
-                          className={`text-center py-4 px-4 ${
-                            vidx === 2 ? "bg-[#00ff88]/5" : ""
-                          }`}
-                        >
-                          {typeof value === "boolean" ? (
-                            value ? (
-                              <Check className="w-5 h-5 text-[#00ff88] mx-auto" />
-                            ) : (
-                              <span className="text-white/20">—</span>
-                            )
-                          ) : (
-                            <span className="text-white/60">{value}</span>
-                          )}
-                        </td>
-                      ))}
-                    </tr>
-                  ))}
+                  <tr className="border-b border-white/5">
+                    <td className="py-4 px-4 text-white">AI Generations</td>
+                    <td className="text-center py-4 px-4 text-white/70">10/mo</td>
+                    <td className="text-center py-4 px-4 text-white/70">50/mo</td>
+                    <td className="text-center py-4 px-4 text-[#00ff88]">Unlimited</td>
+                    <td className="text-center py-4 px-4 text-[#00ff88]">Unlimited</td>
+                    <td className="text-center py-4 px-4 text-[#00ff88]">Unlimited</td>
+                  </tr>
+                  <tr className="border-b border-white/5">
+                    <td className="py-4 px-4 text-white">Export Quality</td>
+                    <td className="text-center py-4 px-4 text-white/70">MP3</td>
+                    <td className="text-center py-4 px-4 text-white/70">WAV + MP3</td>
+                    <td className="text-center py-4 px-4 text-[#00ff88]">Studio</td>
+                    <td className="text-center py-4 px-4 text-[#00ff88]">Studio</td>
+                    <td className="text-center py-4 px-4 text-[#00ff88]">Studio</td>
+                  </tr>
+                  <tr className="border-b border-white/5">
+                    <td className="py-4 px-4 text-white">Distribution</td>
+                    <td className="text-center py-4 px-4 text-white/30">-</td>
+                    <td className="text-center py-4 px-4 text-white/30">-</td>
+                    <td className="text-center py-4 px-4 text-[#00ff88]">
+                      <Check className="w-5 h-5 mx-auto" />
+                    </td>
+                    <td className="text-center py-4 px-4 text-[#00ff88]">
+                      <Check className="w-5 h-5 mx-auto" />
+                    </td>
+                    <td className="text-center py-4 px-4 text-[#00ff88]">
+                      <Check className="w-5 h-5 mx-auto" />
+                    </td>
+                  </tr>
                 </tbody>
               </table>
-            </div>
-          </div>
-        </section>
-
-        {/* Trust Badges */}
-        <section className="px-4 sm:px-6 lg:px-8 mb-20">
-          <div className="max-w-4xl mx-auto">
-            <div className="grid grid-cols-2 md:grid-cols-5 gap-6">
-              {[
-                { icon: <Shield className="w-6 h-6" />, label: "Secure Payments" },
-                { icon: <Globe className="w-6 h-6" />, label: "Global Access" },
-                { icon: <Headphones className="w-6 h-6" />, label: "24/7 Support" },
-                { icon: <Radio className="w-6 h-6" />, label: "Instant Setup" },
-                { icon: <Receipt className="w-6 h-6" />, label: "Tax Included" },
-              ].map((badge, idx) => (
-                <div
-                  key={idx}
-                  className="flex flex-col items-center gap-3 p-6 rounded-xl bg-white/5 border border-white/10"
-                >
-                  <div className="text-[#00ff88]">{badge.icon}</div>
-                  <span className="text-white/80 font-medium text-sm text-center">{badge.label}</span>
-                </div>
-              ))}
-            </div>
-            
-            {/* Tax Notice */}
-            <div className="mt-8 p-6 rounded-xl bg-[#00ff88]/5 border border-[#00ff88]/20">
-              <div className="flex items-start gap-4">
-                <div className="w-10 h-10 rounded-lg bg-[#00ff88]/10 flex items-center justify-center flex-shrink-0">
-                  <CreditCard className="w-5 h-5 text-[#00ff88]" />
-                </div>
-                <div>
-                  <h4 className="font-semibold text-white mb-2">Powered by Lemon Squeezy</h4>
-                  <p className="text-white/60 text-sm leading-relaxed">
-                    All prices shown are inclusive of VAT, GST, and sales tax where applicable. 
-                    We partner with Lemon Squeezy to handle global tax compliance, so you can 
-                    focus on your music while we handle the paperwork. No surprise charges, 
-                    ever.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* FAQ CTA */}
-        <section className="px-4 sm:px-6 lg:px-8">
-          <div className="max-w-2xl mx-auto text-center">
-            <div className="p-8 rounded-2xl bg-gradient-to-r from-[#00ff88]/10 to-[#00ccff]/10 border border-[#00ff88]/20">
-              <Star className="w-10 h-10 text-[#00ff88] mx-auto mb-4" />
-              <h3 className="text-2xl font-bold text-white mb-3">
-                Not sure which plan is right?
-              </h3>
-              <p className="text-white/60 mb-6">
-                Start with our free tier and upgrade anytime. Or talk to our team
-                for personalized recommendations.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <a 
-                  href="/signup" 
-                  className="px-8 py-3 rounded-xl bg-[#00ff88] text-black font-semibold hover:bg-[#00ff88]/90 transition-all duration-300 text-center"
-                >
-                  Start Free
-                </a>
-                <a 
-                  href="mailto:venommacllinx@gmail.com?subject=Enterprise%20Inquiry" 
-                  className="px-8 py-3 rounded-xl bg-white/10 text-white font-semibold hover:bg-white/20 transition-all duration-300 border border-white/20 text-center"
-                >
-                  Contact Sales
-                </a>
-              </div>
             </div>
           </div>
         </section>
