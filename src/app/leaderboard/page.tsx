@@ -3,6 +3,9 @@ import { desc, eq, and, gte, lt, sql } from "drizzle-orm";
 import { Trophy, Medal, Crown, Gamepad2, DollarSign, Calendar, Users } from "lucide-react";
 import Link from "next/link";
 
+// Force dynamic rendering to avoid static generation database errors
+export const dynamic = 'force-dynamic';
+
 // Prize distribution for top 10 players
 const PRIZE_DISTRIBUTION = [
   { rank: 1, prize: 80 },
