@@ -6,6 +6,7 @@ import { useSession, signOut } from "next-auth/react";
 import { User, LogOut, Settings } from "lucide-react";
 
 const navLinks = [
+  { href: "/search", label: "Search" },
   { href: "#generate", label: "Generate" },
   { href: "#publish", label: "Publish" },
   { href: "#games", label: "Games" },
