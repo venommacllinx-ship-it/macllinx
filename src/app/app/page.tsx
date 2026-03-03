@@ -39,11 +39,21 @@ import {
   ChevronRight,
   Headphones,
   MonitorPlay,
-  Puzzle
+  Puzzle,
+  Search,
+  Filter,
+  Clock,
+  Star,
+  Hash,
+  FileText,
+  Folder,
+  Music2,
+  Mic
 } from "lucide-react";
 
 // Feature tabs configuration
 const featureTabs = [
+  { id: "search", label: "Search", icon: Search, color: "from-pink-500 to-rose-500" },
   { id: "music", label: "Music", icon: Disc, color: "from-purple-500 to-pink-500" },
   { id: "games", label: "Games", icon: Gamepad2, color: "from-green-500 to-emerald-500" },
   { id: "code", label: "Code Studio", icon: Code2, color: "from-blue-500 to-cyan-500" },
@@ -87,7 +97,7 @@ const musicPresets = [
 ];
 
 function AppHub() {
-  const [activeTab, setActiveTab] = useState("music");
+  const [activeTab, setActiveTab] = useState("search");
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [currentTrack, setCurrentTrack] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -99,6 +109,8 @@ function AppHub() {
   const [selectedPreset, setSelectedPreset] = useState<string | null>(null);
   const [isGenerating, setIsGenerating] = useState(false);
   const [generatedTracks, setGeneratedTracks] = useState<string[]>([]);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchFilter, setSearchFilter] = useState("all");
   const chatEndRef = useRef<HTMLDivElement>(null);
 
   // Auto-scroll chat
@@ -173,6 +185,195 @@ function AppHub() {
 
   const renderContent = () => {
     switch (activeTab) {
+      case "search":
+        return (
+          <div className="h-full flex flex-col">
+            {/* Search Header */}
+            <div className="flex items-center gap-4 mb-6">
+              <div className="flex-1 relative">
+                <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                <input
+                  type="text"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder="Search for music, code, chats, games..."
+                  className="w-full bg-slate-800 border border-slate-700 rounded-xl pl-12 pr-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-pink-500"
+                />
+              </div>
+              <div className="flex items-center gap-2">
+                <Filter className="w-5 h-5 text-gray-400" />
+                <select
+                  value={searchFilter}
+                  onChange={(e) => setSearchFilter(e.target.value)}
+                  className="bg-slate-800 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-pink-500"
+                >
+                  <option value="all">All</option>
+                  <option value="music">Music</option>
+                  <option value="code">Code</option>
+                  <option value="chat">Chat</option>
+                  <option value="games">Games</option>
+                </select>
+              </div>
+            </div>
+
+            {/* Search Results */}
+            <div className="flex-1 overflow-auto">
+              {searchQuery ? (
+                <div className="space-y-4">
+                  {/* Music Results */}
+                  {(searchFilter === "all" || searchFilter === "music") && (
+                    <div className="bg-slate-900/50 rounded-2xl p-4 border border-slate-700/50">
+                      <h4 className="text-white font-semibold mb-3 flex items-center gap-2">
+                        <Music2 className="w-5 h-5 text-purple-400" />
+                        Music Tracks
+                      </h4>
+                      <div className="space-y-2">
+                        {sampleTracks
+                          .filter((track) =>
+                            track.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                            track.artist.toLowerCase().includes(searchQuery.toLowerCase())
+                          )
+                          .map((track) => (
+                            <button
+                              key={track.id}
+                              className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-slate-800/50 transition-colors text-left"
+                            >
+                              <span className="text-2xl">{track.cover}</span>
+                              <div className="flex-1">
+                                <p className="text-white font-medium">{track.title}</p>
+                                <p className="text-sm text-gray-500">{track.artist}</p>
+                              </div>
+                              <span className="text-xs text-gray-500">{track.duration}</span>
+                            </button>
+                          ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Code Results */}
+                  {(searchFilter === "all" || searchFilter === "code") && (
+                    <div className="bg-slate-900/50 rounded-2xl p-4 border border-slate-700/50">
+                      <h4 className="text-white font-semibold mb-3 flex items-center gap-2">
+                        <Code2 className="w-5 h-5 text-blue-400" />
+                        Code Files
+                      </h4>
+                      <div className="space-y-2">
+                        <button className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-slate-800/50 transition-colors text-left">
+                          <FileText className="w-5 h-5 text-blue-400" />
+                          <div className="flex-1">
+                            <p className="text-white font-medium">main.js</p>
+                            <p className="text-sm text-gray-500">JavaScript • 2 KB</p>
+                          </div>
+                          <Clock className="w-4 h-4 text-gray-500" />
+                        </button>
+                        <button className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-slate-800/50 transition-colors text-left">
+                          <FileText className="w-5 h-5 text-blue-400" />
+                          <div className="flex-1">
+                            <p className="text-white font-medium">styles.css</p>
+                            <p className="text-sm text-gray-500">CSS • 1.5 KB</p>
+                          </div>
+                          <Clock className="w-4 h-4 text-gray-500" />
+                        </button>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Chat Results */}
+                  {(searchFilter === "all" || searchFilter === "chat") && (
+                    <div className="bg-slate-900/50 rounded-2xl p-4 border border-slate-700/50">
+                      <h4 className="text-white font-semibold mb-3 flex items-center gap-2">
+                        <MessageSquare className="w-5 h-5 text-orange-400" />
+                        Chat Messages
+                      </h4>
+                      <div className="space-y-2">
+                        {chatMessages
+                          .filter((msg) =>
+                            msg.message.toLowerCase().includes(searchQuery.toLowerCase())
+                          )
+                          .map((msg) => (
+                            <div
+                              key={msg.id}
+                              className="p-3 rounded-xl bg-slate-800/30"
+                            >
+                              <div className="flex items-center gap-2 mb-1">
+                                <span className={`text-sm font-medium ${msg.isBot ? "text-orange-400" : "text-white"}`}>
+                                  {msg.user}
+                                </span>
+                                <span className="text-xs text-gray-500">{msg.time}</span>
+                              </div>
+                              <p className="text-gray-300 text-sm">{msg.message}</p>
+                            </div>
+                          ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              ) : (
+                /* Recent Searches & Suggestions */
+                <div className="space-y-6">
+                  <div>
+                    <h4 className="text-white font-semibold mb-3 flex items-center gap-2">
+                      <Clock className="w-5 h-5 text-gray-400" />
+                      Recent Searches
+                    </h4>
+                    <div className="flex flex-wrap gap-2">
+                      {["trap beats", "lofi chill", "python tutorial", "multiplayer games"].map((term) => (
+                        <button
+                          key={term}
+                          onClick={() => setSearchQuery(term)}
+                          className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-gray-300 rounded-full text-sm transition-colors"
+                        >
+                          {term}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div>
+                    <h4 className="text-white font-semibold mb-3 flex items-center gap-2">
+                      <Sparkles className="w-5 h-5 text-yellow-400" />
+                      Trending Now
+                    </h4>
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                      {[
+                        { icon: "🔥", label: "Hot Tracks", color: "from-red-500 to-orange-500" },
+                        { icon: "🎵", label: "New Releases", color: "from-purple-500 to-pink-500" },
+                        { icon: "🎮", label: "Top Games", color: "from-green-500 to-emerald-500" },
+                        { icon: "💻", label: "Code Snippets", color: "from-blue-500 to-cyan-500" }
+                      ].map((item) => (
+                        <button
+                          key={item.label}
+                          className={`p-4 bg-gradient-to-br ${item.color} rounded-xl text-white text-center hover:opacity-90 transition-opacity`}
+                        >
+                          <span className="text-2xl block mb-1">{item.icon}</span>
+                          <span className="text-sm font-medium">{item.label}</span>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div>
+                    <h4 className="text-white font-semibold mb-3 flex items-center gap-2">
+                      <Hash className="w-5 h-5 text-blue-400" />
+                      Popular Tags
+                    </h4>
+                    <div className="flex flex-wrap gap-2">
+                      {["#hiphop", "#electronic", "#coding", "#ai", "#beats", "#remix", "#collab", "#tutorial"].map((tag) => (
+                        <button
+                          key={tag}
+                          className="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-blue-400 rounded-lg text-sm transition-colors"
+                        >
+                          {tag}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        );
+
       case "music":
         return (
           <div className="h-full flex flex-col lg:flex-row gap-6">
