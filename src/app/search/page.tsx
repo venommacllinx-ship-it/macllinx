@@ -31,6 +31,192 @@ import {
   Plus
 } from "lucide-react";
 
+// Animated Live Wallpaper Component
+function LiveWallpaper({ artistId }: { artistId: string }) {
+  const getWallpaper = () => {
+    switch (artistId) {
+      case "1": // The Weeknd - Neon/Cyberpunk theme
+        return (
+          <>
+            <div className="absolute inset-0 bg-gradient-to-br from-purple-900 via-red-900 to-black" />
+            <div className="absolute inset-0 opacity-40">
+              {[...Array(20)].map((_, i) => (
+                <div
+                  key={i}
+                  className="absolute w-1 h-20 bg-gradient-to-b from-red-500 to-transparent animate-pulse"
+                  style={{
+                    left: `${Math.random() * 100}%`,
+                    top: `${Math.random() * 100}%`,
+                    animationDelay: `${Math.random() * 2}s`,
+                    animationDuration: `${1 + Math.random() * 2}s`
+                  }}
+                />
+              ))}
+            </div>
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(255,0,100,0.2),transparent_70%)] animate-pulse" />
+            <div className="absolute inset-0 backdrop-blur-[1px]" />
+          </>
+        );
+      case "2": // Drake - OVO/Ocean theme
+        return (
+          <>
+            <div className="absolute inset-0 bg-gradient-to-b from-blue-900 via-teal-900 to-black" />
+            <div className="absolute inset-0 overflow-hidden">
+              {[...Array(5)].map((_, i) => (
+                <div
+                  key={i}
+                  className="absolute w-full h-32 bg-gradient-to-r from-transparent via-blue-400/20 to-transparent animate-wave"
+                  style={{
+                    top: `${20 + i * 15}%`,
+                    animationDelay: `${i * 0.5}s`,
+                    animationDuration: "4s"
+                  }}
+                />
+              ))}
+            </div>
+            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(0,150,200,0.3),transparent_60%)]" />
+          </>
+        );
+      case "3": // Taylor Swift - Sparkle/Magic theme
+        return (
+          <>
+            <div className="absolute inset-0 bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900" />
+            <div className="absolute inset-0 overflow-hidden">
+              {[...Array(30)].map((_, i) => (
+                <div
+                  key={i}
+                  className="absolute w-1 h-1 bg-white rounded-full animate-sparkle"
+                  style={{
+                    left: `${Math.random() * 100}%`,
+                    top: `${Math.random() * 100}%`,
+                    animationDelay: `${Math.random() * 3}s`,
+                    animationDuration: `${2 + Math.random() * 2}s`
+                  }}
+                />
+              ))}
+            </div>
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_30%,rgba(255,200,255,0.3),transparent_50%)] animate-pulse" />
+          </>
+        );
+      case "4": // Kendrick Lamar - Gritty/Street theme
+        return (
+          <>
+            <div className="absolute inset-0 bg-gradient-to-br from-orange-900 via-red-950 to-black" />
+            <div className="absolute inset-0 overflow-hidden">
+              {[...Array(10)].map((_, i) => (
+                <div
+                  key={i}
+                  className="absolute h-px w-full bg-gradient-to-r from-transparent via-orange-500/40 to-transparent animate-slide"
+                  style={{
+                    top: `${Math.random() * 100}%`,
+                    animationDelay: `${Math.random() * 2}s`,
+                    animationDuration: `${3 + Math.random() * 2}s`
+                  }}
+                />
+              ))}
+            </div>
+            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,rgba(200,100,0,0.3),transparent_60%)]" />
+            <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg%20width%3D%2260%22%20height%3D%2260%22%20viewBox%3D%220%200%2060%2060%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%3Cg%20fill%3D%22none%22%20fill-rule%3D%22evenodd%22%3E%3Cg%20fill%3D%22%239C92AC%22%20fill-opacity%3D%220.05%22%3E%3Cpath%20d%3D%22M36%2034v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6%2034v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6%204V0H4v4H0v2h4v4h2V6h4V4H6z%22/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')] opacity-30" />
+          </>
+        );
+      case "5": // Billie Eilish - Dark/Spider theme
+        return (
+          <>
+            <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-black to-green-950" />
+            <div className="absolute inset-0 overflow-hidden">
+              {[...Array(8)].map((_, i) => (
+                <div
+                  key={i}
+                  className="absolute w-40 h-40 border border-green-500/20 rounded-full animate-ripple"
+                  style={{
+                    left: `${50 + (Math.random() - 0.5) * 40}%`,
+                    top: `${50 + (Math.random() - 0.5) * 40}%`,
+                    animationDelay: `${i * 0.8}s`,
+                    animationDuration: "4s"
+                  }}
+                />
+              ))}
+            </div>
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_30%,rgba(0,255,100,0.1),transparent_50%)] animate-pulse" />
+          </>
+        );
+      case "6": // Bad Bunny - Latin/Beach theme
+        return (
+          <>
+            <div className="absolute inset-0 bg-gradient-to-br from-yellow-600 via-orange-600 to-pink-700" />
+            <div className="absolute inset-0 overflow-hidden">
+              {[...Array(15)].map((_, i) => (
+                <div
+                  key={i}
+                  className="absolute w-2 h-2 bg-yellow-300/50 rounded-full animate-float"
+                  style={{
+                    left: `${Math.random() * 100}%`,
+                    top: `${Math.random() * 100}%`,
+                    animationDelay: `${Math.random() * 2}s`,
+                    animationDuration: `${3 + Math.random() * 2}s`
+                  }}
+                />
+              ))}
+            </div>
+            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom,rgba(255,200,100,0.4),transparent_60%)]" />
+          </>
+        );
+      default:
+        return (
+          <>
+            <div className="absolute inset-0 bg-gradient-to-br from-purple-900 via-slate-900 to-black" />
+            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(100,50,200,0.3),transparent_70%)]" />
+          </>
+        );
+    }
+  };
+
+  return (
+    <div className="absolute inset-0 overflow-hidden">
+      {getWallpaper()}
+      <style jsx>{`
+        @keyframes wave {
+          0%, 100% { transform: translateX(-100%); }
+          50% { transform: translateX(100%); }
+        }
+        @keyframes sparkle {
+          0%, 100% { opacity: 0; transform: scale(0); }
+          50% { opacity: 1; transform: scale(1); }
+        }
+        @keyframes slide {
+          0% { transform: translateX(-100%); }
+          100% { transform: translateX(100%); }
+        }
+        @keyframes ripple {
+          0% { transform: translate(-50%, -50%) scale(0); opacity: 1; }
+          100% { transform: translate(-50%, -50%) scale(3); opacity: 0; }
+        }
+        @keyframes float {
+          0%, 100% { transform: translateY(0) translateX(0); }
+          25% { transform: translateY(-20px) translateX(10px); }
+          50% { transform: translateY(-10px) translateX(-10px); }
+          75% { transform: translateY(-30px) translateX(5px); }
+        }
+        .animate-wave {
+          animation: wave linear infinite;
+        }
+        .animate-sparkle {
+          animation: sparkle ease-in-out infinite;
+        }
+        .animate-slide {
+          animation: slide linear infinite;
+        }
+        .animate-ripple {
+          animation: ripple ease-out infinite;
+        }
+        .animate-float {
+          animation: float ease-in-out infinite;
+        }
+      `}</style>
+    </div>
+  );
+}
+
 // Mock artist data
 const mockArtists = [
   {
@@ -204,13 +390,15 @@ export default function ArtistSearchPage() {
 
   if (selectedArtist) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-slate-900 via-slate-950 to-black">
-        <Header />
+      <div className="min-h-screen bg-black relative">
+        {/* Live Wallpaper - Artist Only */}
+        <LiveWallpaper artistId={selectedArtist.id} />
         
-        {/* Artist Header */}
-        <div className="relative pt-24 pb-8 px-4 sm:px-6 lg:px-8">
-          {/* Background Gradient */}
-          <div className="absolute inset-0 bg-gradient-to-b from-purple-900/40 via-slate-950/80 to-slate-950 pointer-events-none" />
+        <div className="relative z-10">
+          <Header />
+          
+          {/* Artist Header */}
+          <div className="relative pt-24 pb-8 px-4 sm:px-6 lg:px-8">
           
           <div className="relative max-w-7xl mx-auto">
             <button
@@ -360,6 +548,8 @@ export default function ArtistSearchPage() {
           </div>
         </div>
 
+        </div>
+        
         <Footer />
       </div>
     );
