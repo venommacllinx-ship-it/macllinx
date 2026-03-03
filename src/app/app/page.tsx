@@ -1,8 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
+import { FolderGate } from "@/components/FolderGate";
 import {
   Gamepad2,
   Code2,
@@ -87,7 +86,7 @@ const musicPresets = [
   { id: "rock", name: "Rock", description: "Guitar-driven energy", icon: "🎸" }
 ];
 
-export default function AppHub() {
+function AppHub() {
   const [activeTab, setActiveTab] = useState("music");
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [currentTrack, setCurrentTrack] = useState(0);
@@ -577,12 +576,8 @@ export default function AppHub() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-purple-950 to-slate-950">
-      <Header />
-      
-      <main className={`${isFullscreen ? 'fixed inset-0 z-50' : 'pt-20 pb-16'} px-4 sm:px-6 lg:px-8`}>
-        <div className={`${isFullscreen ? 'h-full p-4' : 'max-w-7xl mx-auto h-[calc(100vh-8rem)]'}`}>
-          {/* App Hub Container */}
+    <div className="h-full flex flex-col">
+      {/* App Hub Container */}
           <div className="h-full bg-slate-900/30 backdrop-blur-xl rounded-3xl border border-slate-700/50 overflow-hidden flex flex-col">
             {/* Header */}
             <div className="flex items-center justify-between px-6 py-4 border-b border-slate-700/50 bg-slate-900/50">
@@ -640,10 +635,15 @@ export default function AppHub() {
               {renderContent()}
             </div>
           </div>
-        </div>
-      </main>
-      
-      {!isFullscreen && <Footer />}
     </div>
+  );
+}
+
+// Wrap the page with FolderGate
+export default function AppPage() {
+  return (
+    <FolderGate>
+      <AppHub />
+    </FolderGate>
   );
 }
