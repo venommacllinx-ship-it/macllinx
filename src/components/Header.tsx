@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { useSession, signOut } from "next-auth/react";
 import { User, LogOut, Settings } from "lucide-react";
+import { useAuth } from "@/components/Providers";
 
 const navLinks = [
   { href: "/search", label: "Search" },
@@ -24,9 +24,8 @@ const navLinks = [
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const { data: session, status } = useSession();
-  const isLoading = status === "loading";
-  const isAuthenticated = status === "authenticated";
+  const { user, signOut, isLoading } = useAuth();
+  const isAuthenticated = !!user;
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-[#0a0a0a]/90 backdrop-blur-md border-b border-[#1a1a1a]">
@@ -87,22 +86,14 @@ export default function Header() {
               <>
                 {/* User Profile */}
                 <div className="flex items-center gap-3">
-                  {session.user?.image ? (
-                    <img
-                      src={session.user.image}
-                      alt={session.user.name || "User"}
-                      className="w-8 h-8 rounded-full border border-neutral-700"
-                    />
-                  ) : (
-                    <div className="w-8 h-8 rounded-full bg-neutral-800 border border-neutral-700 flex items-center justify-center">
-                      <User className="w-4 h-4 text-neutral-400" />
-                    </div>
-                  )}
+                  <div className="w-8 h-8 rounded-full bg-neutral-800 border border-neutral-700 flex items-center justify-center">
+                    <User className="w-4 h-4 text-neutral-400" />
+                  </div>
                   <span className="text-sm text-gray-300 hidden lg:block">
-                    {session.user?.name?.split(" ")[0] || "User"}
+                    {user?.name?.split(" ")[0] || "User"}
                   </span>
                   <button
-                    onClick={() => signOut({ callbackUrl: "/" })}
+                    onClick={signOut}
                     className="p-2 text-gray-400 hover:text-red-400 transition-colors"
                     title="Sign out"
                   >
@@ -173,24 +164,16 @@ export default function Header() {
               {isAuthenticated ? (
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
-                    {session.user?.image ? (
-                      <img
-                        src={session.user.image}
-                        alt={session.user.name || "User"}
-                        className="w-8 h-8 rounded-full border border-neutral-700"
-                      />
-                    ) : (
-                      <div className="w-8 h-8 rounded-full bg-neutral-800 border border-neutral-700 flex items-center justify-center">
-                        <User className="w-4 h-4 text-neutral-400" />
-                      </div>
-                    )}
+                    <div className="w-8 h-8 rounded-full bg-neutral-800 border border-neutral-700 flex items-center justify-center">
+                      <User className="w-4 h-4 text-neutral-400" />
+                    </div>
                     <span className="text-sm text-gray-300">
-                      {session.user?.name || "User"}
+                      {user?.name || "User"}
                     </span>
                   </div>
                   <button
                     onClick={() => {
-                      signOut({ callbackUrl: "/" });
+                      signOut();
                       setMenuOpen(false);
                     }}
                     className="flex items-center gap-2 text-sm text-red-400 hover:text-red-300"

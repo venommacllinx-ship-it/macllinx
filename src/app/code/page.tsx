@@ -1,26 +1,21 @@
 "use client";
 
-import { useState, useRef } from "react";
-import Editor from "@monaco-editor/react";
+import { useState } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import {
   Play,
-  Square,
   Trash2,
   Copy,
   Download,
   FileCode,
   Terminal,
-  Settings,
-  ChevronDown,
   Moon,
   Sun,
-  RefreshCw,
   Code2,
 } from "lucide-react";
 
-type Language = "javascript" | "typescript" | "python" | "html" | "css" | "json";
+type Language = "javascript" | "html" | "css" | "json";
 
 interface FileTab {
   id: string;
@@ -49,345 +44,324 @@ function greet(user) {
 
 console.log(greet("Developer"));
 
-// Array operations
-const beats = ["Trap", "Hip-Hop", "R&B", "Electronic"];
-console.log("Available genres:", beats);
+// Math example
+const sum = [1, 2, 3, 4, 5].reduce((a, b) => a + b, 0);
+console.log("Sum:", sum);`,
+  },
+  {
+    id: "2",
+    name: "style.css",
+    language: "css",
+    content: `/* Venom Styles */
+:root {
+  --primary: #00ff88;
+  --bg: #0a0a0a;
+}
 
-// Object example
-const producer = {
-  name: "Venom",
-  style: "Dark",
-  bpm: 140
-};
+body {
+  background: var(--bg);
+  color: white;
+  font-family: system-ui, sans-serif;
+}
 
-console.log("Producer:", producer);`,
+.glow {
+  box-shadow: 0 0 20px var(--primary);
+}`,
+  },
+  {
+    id: "3",
+    name: "index.html",
+    language: "html",
+    content: `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Venom App</title>
+</head>
+<body>
+  <h1>Hello Venom!</h1>
+  <p>Welcome to the music platform.</p>
+</body>
+</html>`,
+  },
+  {
+    id: "4",
+    name: "data.json",
+    language: "json",
+    content: `{
+  "name": "Venom",
+  "version": "1.0.0",
+  "type": "music-platform",
+  "features": [
+    "AI Music Generation",
+    "Global Publishing",
+    "Code Studio"
+  ]
+}`,
   },
 ];
 
-const languageOptions: { value: Language; label: string; extension: string }[] = [
-  { value: "javascript", label: "JavaScript", extension: "js" },
-  { value: "typescript", label: "TypeScript", extension: "ts" },
-  { value: "python", label: "Python", extension: "py" },
-  { value: "html", label: "HTML", extension: "html" },
-  { value: "css", label: "CSS", extension: "css" },
-  { value: "json", label: "JSON", extension: "json" },
-];
+const languageExtensions: Record<Language, string> = {
+  javascript: "js",
+  html: "html",
+  css: "css",
+  json: "json",
+};
 
 export default function CodePage() {
   const [files, setFiles] = useState<FileTab[]>(defaultFiles);
   const [activeFileId, setActiveFileId] = useState("1");
   const [output, setOutput] = useState<string[]>([]);
   const [isRunning, setIsRunning] = useState(false);
-  const [theme, setTheme] = useState<"vs-dark" | "light">("vs-dark");
-  const [showLanguageMenu, setShowLanguageMenu] = useState(false);
-  const editorRef = useRef<any>(null);
+  const [isDark, setIsDark] = useState(true);
 
   const activeFile = files.find((f) => f.id === activeFileId) || files[0];
 
-  const handleEditorDidMount = (editor: any) => {
-    editorRef.current = editor;
-  };
-
-  const handleCodeChange = (value: string | undefined) => {
-    if (value === undefined) return;
+  const updateFileContent = (content: string) => {
     setFiles((prev) =>
-      prev.map((f) => (f.id === activeFileId ? { ...f, content: value } : f))
+      prev.map((f) => (f.id === activeFileId ? { ...f, content } : f))
     );
   };
 
   const runCode = () => {
-    if (isRunning) return;
-    setIsRunning(true);
-    setOutput((prev) => [...prev, `> Running ${activeFile.name}...`]);
+    if (activeFile.language !== "javascript") {
+      setOutput([
+        "⚠️  Only JavaScript files can be executed",
+        `Current file type: ${activeFile.language}`,
+      ]);
+      return;
+    }
 
-    const code = activeFile.content;
-    const newOutput: string[] = [];
+    setIsRunning(true);
+    setOutput([]);
+    const logs: string[] = [];
 
     // Capture console.log output
     const originalLog = console.log;
-    const originalError = console.error;
-
     console.log = (...args) => {
-      newOutput.push(args.map((arg) => String(arg)).join(" "));
-    };
-    console.error = (...args) => {
-      newOutput.push(`Error: ${args.map((arg) => String(arg)).join(" ")}`);
+      logs.push(args.map((a) => String(a)).join(" "));
     };
 
     try {
-      if (activeFile.language === "javascript" || activeFile.language === "typescript") {
-        // eslint-disable-next-line no-eval
-        eval(code);
-      } else if (activeFile.language === "python") {
-        newOutput.push("Python execution requires a backend server.");
-        newOutput.push("For now, try JavaScript or TypeScript!");
-      } else if (activeFile.language === "html") {
-        newOutput.push("HTML preview would open in a new window.");
-        newOutput.push("Feature coming soon!");
-      } else if (activeFile.language === "css") {
-        newOutput.push("CSS is styling - apply it to HTML to see results.");
-      } else if (activeFile.language === "json") {
-        try {
-          const parsed = JSON.parse(code);
-          newOutput.push("Valid JSON:");
-          newOutput.push(JSON.stringify(parsed, null, 2));
-        } catch (e) {
-          newOutput.push(`JSON Error: ${e}`);
-        }
-      }
+      // eslint-disable-next-line no-eval
+      eval(activeFile.content);
+      setOutput(logs.length > 0 ? logs : ["✅ Code executed successfully (no output)"]);
     } catch (error) {
-      newOutput.push(`Runtime Error: ${error}`);
+      setOutput([
+        "❌ Error:",
+        error instanceof Error ? error.message : String(error),
+      ]);
     } finally {
       console.log = originalLog;
-      console.error = originalError;
-    }
-
-    setTimeout(() => {
-      setOutput((prev) => [...prev, ...newOutput, "> Done"]);
       setIsRunning(false);
-    }, 500);
+    }
   };
 
-  const clearOutput = () => {
-    setOutput([]);
-  };
+  const clearOutput = () => setOutput([]);
 
   const copyCode = () => {
     navigator.clipboard.writeText(activeFile.content);
-    setOutput((prev) => [...prev, "> Code copied to clipboard!"]);
+    setOutput(["📋 Code copied to clipboard!"]);
   };
 
-  const downloadCode = () => {
+  const downloadFile = () => {
     const blob = new Blob([activeFile.content], { type: "text/plain" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
     a.download = activeFile.name;
+    document.body.appendChild(a);
     a.click();
+    document.body.removeChild(a);
     URL.revokeObjectURL(url);
-    setOutput((prev) => [...prev, `> Downloaded ${activeFile.name}`]);
-  };
-
-  const createNewFile = () => {
-    const newId = String(files.length + 1);
-    const newFile: FileTab = {
-      id: newId,
-      name: `script${newId}.js`,
-      language: "javascript",
-      content: "// New file\n",
-    };
-    setFiles([...files, newFile]);
-    setActiveFileId(newId);
-  };
-
-  const changeLanguage = (lang: Language) => {
-    const extension = languageOptions.find((l) => l.value === lang)?.extension || "js";
-    const baseName = activeFile.name.split(".")[0];
-    setFiles((prev) =>
-      prev.map((f) =>
-        f.id === activeFileId
-          ? { ...f, language: lang, name: `${baseName}.${extension}` }
-          : f
-      )
-    );
-    setShowLanguageMenu(false);
+    setOutput([`💾 Downloaded ${activeFile.name}`]);
   };
 
   return (
-    <div className="min-h-screen bg-neutral-950 flex flex-col">
+    <div className="min-h-screen bg-[#0a0a0a]">
       <Header />
 
-      {/* Toolbar */}
-      <div className="bg-neutral-900 border-b border-neutral-800">
-        <div className="max-w-[1600px] mx-auto px-4 py-3">
-          <div className="flex items-center justify-between">
-            {/* Left: File tabs */}
-            <div className="flex items-center gap-2">
-              <div className="flex items-center gap-1 bg-neutral-950 rounded-lg p-1">
-                {files.map((file) => (
-                  <button
-                    key={file.id}
-                    onClick={() => setActiveFileId(file.id)}
-                    className={`flex items-center gap-2 px-3 py-1.5 rounded-md text-sm font-medium transition-all ${
-                      activeFileId === file.id
-                        ? "bg-neutral-800 text-white"
-                        : "text-neutral-400 hover:text-white hover:bg-neutral-900"
-                    }`}
-                  >
-                    <FileCode className="w-4 h-4" />
-                    {file.name}
-                  </button>
-                ))}
-                <button
-                  onClick={createNewFile}
-                  className="px-3 py-1.5 rounded-md text-neutral-400 hover:text-white hover:bg-neutral-900 transition-all"
-                >
-                  +
-                </button>
+      <main className="pt-16">
+        {/* Hero */}
+        <section className="bg-gradient-to-b from-[#0f0f0f] to-[#0a0a0a] border-b border-[#1a1a1a]">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div className="flex items-center gap-4 mb-4">
+              <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-600 rounded-xl flex items-center justify-center">
+                <Code2 className="w-6 h-6 text-white" />
+              </div>
+              <div>
+                <h1 className="text-3xl font-bold text-white">Code Studio</h1>
+                <p className="text-neutral-400">Write, run, and experiment with code</p>
               </div>
             </div>
+          </div>
+        </section>
 
-            {/* Center: Language selector */}
-            <div className="relative">
-              <button
-                onClick={() => setShowLanguageMenu(!showLanguageMenu)}
-                className="flex items-center gap-2 px-4 py-2 bg-neutral-950 rounded-lg text-sm font-medium text-neutral-300 hover:text-white transition-all"
-              >
-                <Code2 className="w-4 h-4" />
-                {languageOptions.find((l) => l.value === activeFile.language)?.label}
-                <ChevronDown className="w-4 h-4" />
-              </button>
-              {showLanguageMenu && (
-                <div className="absolute top-full left-0 mt-2 w-40 bg-neutral-900 border border-neutral-800 rounded-lg shadow-xl z-50">
-                  {languageOptions.map((lang) => (
+        {/* Code Editor */}
+        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div className="grid lg:grid-cols-3 gap-6">
+            {/* Editor */}
+            <div className="lg:col-span-2 space-y-4">
+              {/* Toolbar */}
+              <div className="flex flex-wrap items-center justify-between gap-4 bg-[#111] border border-[#222] rounded-xl p-4">
+                {/* File Tabs */}
+                <div className="flex items-center gap-2 overflow-x-auto">
+                  {files.map((file) => (
                     <button
-                      key={lang.value}
-                      onClick={() => changeLanguage(lang.value)}
-                      className={`w-full text-left px-4 py-2 text-sm first:rounded-t-lg last:rounded-b-lg transition-colors ${
-                        activeFile.language === lang.value
-                          ? "bg-green-500/20 text-green-400"
-                          : "text-neutral-300 hover:bg-neutral-800"
+                      key={file.id}
+                      onClick={() => setActiveFileId(file.id)}
+                      className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors whitespace-nowrap ${
+                        activeFileId === file.id
+                          ? "bg-green-500/20 text-green-400 border border-green-500/30"
+                          : "text-neutral-400 hover:text-white hover:bg-[#1a1a1a]"
                       }`}
                     >
-                      {lang.label}
+                      <FileCode className="w-4 h-4" />
+                      {file.name}
                     </button>
                   ))}
                 </div>
-              )}
-            </div>
 
-            {/* Right: Actions */}
-            <div className="flex items-center gap-2">
-              <button
-                onClick={() => setTheme(theme === "vs-dark" ? "light" : "vs-dark")}
-                className="p-2 rounded-lg bg-neutral-950 text-neutral-400 hover:text-white transition-all"
-                title="Toggle theme"
+                {/* Actions */}
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => setIsDark(!isDark)}
+                    className="p-2 text-neutral-400 hover:text-white hover:bg-[#1a1a1a] rounded-lg transition-colors"
+                    title="Toggle theme"
+                  >
+                    {isDark ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+                  </button>
+                  <button
+                    onClick={copyCode}
+                    className="p-2 text-neutral-400 hover:text-white hover:bg-[#1a1a1a] rounded-lg transition-colors"
+                    title="Copy code"
+                  >
+                    <Copy className="w-4 h-4" />
+                  </button>
+                  <button
+                    onClick={downloadFile}
+                    className="p-2 text-neutral-400 hover:text-white hover:bg-[#1a1a1a] rounded-lg transition-colors"
+                    title="Download file"
+                  >
+                    <Download className="w-4 h-4" />
+                  </button>
+                </div>
+              </div>
+
+              {/* Text Area */}
+              <div
+                className={`border border-[#222] rounded-xl overflow-hidden ${
+                  isDark ? "bg-[#0d0d0d]" : "bg-white"
+                }`}
               >
-                {theme === "vs-dark" ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
-              </button>
-              <button
-                onClick={copyCode}
-                className="p-2 rounded-lg bg-neutral-950 text-neutral-400 hover:text-white transition-all"
-                title="Copy code"
-              >
-                <Copy className="w-4 h-4" />
-              </button>
-              <button
-                onClick={downloadCode}
-                className="p-2 rounded-lg bg-neutral-950 text-neutral-400 hover:text-white transition-all"
-                title="Download file"
-              >
-                <Download className="w-4 h-4" />
-              </button>
+                <textarea
+                  value={activeFile.content}
+                  onChange={(e) => updateFileContent(e.target.value)}
+                  className={`w-full h-96 p-4 font-mono text-sm resize-none focus:outline-none ${
+                    isDark
+                      ? "bg-[#0d0d0d] text-neutral-300"
+                      : "bg-white text-neutral-800"
+                  }`}
+                  spellCheck={false}
+                />
+              </div>
+
+              {/* Run Button */}
               <button
                 onClick={runCode}
                 disabled={isRunning}
-                className="flex items-center gap-2 px-4 py-2 bg-green-500 hover:bg-green-400 disabled:bg-green-500/50 text-black font-bold rounded-lg transition-all"
+                className="w-full flex items-center justify-center gap-2 bg-green-500 hover:bg-green-400 disabled:bg-green-500/50 text-black font-semibold py-3 px-6 rounded-xl transition-colors"
               >
                 {isRunning ? (
-                  <RefreshCw className="w-4 h-4 animate-spin" />
+                  <>
+                    <div className="w-4 h-4 border-2 border-black/30 border-t-black rounded-full animate-spin" />
+                    Running...
+                  </>
                 ) : (
-                  <Play className="w-4 h-4" />
+                  <>
+                    <Play className="w-4 h-4" />
+                    Run Code
+                  </>
                 )}
-                Run
               </button>
             </div>
-          </div>
-        </div>
-      </div>
 
-      {/* Main content */}
-      <div className="flex-1 flex">
-        {/* Editor */}
-        <div className="flex-1 bg-neutral-950">
-          <Editor
-            height="100%"
-            language={activeFile.language}
-            value={activeFile.content}
-            theme={theme}
-            onChange={handleCodeChange}
-            onMount={handleEditorDidMount}
-            options={{
-              minimap: { enabled: false },
-              fontSize: 14,
-              lineNumbers: "on",
-              roundedSelection: false,
-              scrollBeyondLastLine: false,
-              readOnly: false,
-              automaticLayout: true,
-              padding: { top: 16 },
-              fontFamily: "JetBrains Mono, Fira Code, monospace",
-              fontLigatures: true,
-            }}
-          />
-        </div>
-
-        {/* Console */}
-        <div className="w-96 bg-neutral-900 border-l border-neutral-800 flex flex-col">
-          {/* Console header */}
-          <div className="flex items-center justify-between px-4 py-3 border-b border-neutral-800">
-            <div className="flex items-center gap-2 text-neutral-300">
-              <Terminal className="w-4 h-4" />
-              <span className="font-medium">Console</span>
-            </div>
-            <button
-              onClick={clearOutput}
-              className="p-1.5 rounded-md text-neutral-400 hover:text-red-400 hover:bg-red-500/10 transition-all"
-              title="Clear console"
-            >
-              <Trash2 className="w-4 h-4" />
-            </button>
-          </div>
-
-          {/* Console output */}
-          <div className="flex-1 overflow-auto p-4 font-mono text-sm">
-            {output.length === 0 ? (
-              <div className="text-neutral-500 italic">
-                Click Run to see output...
-              </div>
-            ) : (
-              output.map((line, i) => (
-                <div
-                  key={i}
-                  className={`mb-1 ${
-                    line.startsWith(">")
-                      ? "text-green-400"
-                      : line.startsWith("Error")
-                      ? "text-red-400"
-                      : "text-neutral-300"
-                  }`}
-                >
-                  {line}
+            {/* Output Console */}
+            <div className="space-y-4">
+              <div className="bg-[#111] border border-[#222] rounded-xl overflow-hidden">
+                {/* Console Header */}
+                <div className="flex items-center justify-between px-4 py-3 border-b border-[#222]">
+                  <div className="flex items-center gap-2">
+                    <Terminal className="w-4 h-4 text-green-500" />
+                    <span className="text-sm font-medium text-white">Console Output</span>
+                  </div>
+                  <button
+                    onClick={clearOutput}
+                    className="p-1.5 text-neutral-400 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-colors"
+                    title="Clear console"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </button>
                 </div>
-              ))
-            )}
-          </div>
 
-          {/* Console input hint */}
-          <div className="px-4 py-2 border-t border-neutral-800 text-xs text-neutral-500">
-            JavaScript & TypeScript run in browser. Python requires backend.
-          </div>
-        </div>
-      </div>
+                {/* Console Output */}
+                <div className="h-96 overflow-auto p-4 font-mono text-sm space-y-1">
+                  {output.length === 0 ? (
+                    <div className="text-neutral-600 italic">
+                      Click "Run Code" to see output...
+                    </div>
+                  ) : (
+                    output.map((line, i) => (
+                      <div
+                        key={i}
+                        className={`${
+                          line.startsWith("❌")
+                            ? "text-red-400"
+                            : line.startsWith("⚠️")
+                            ? "text-yellow-400"
+                            : line.startsWith("✅") || line.startsWith("📋") || line.startsWith("💾")
+                            ? "text-green-400"
+                            : "text-neutral-300"
+                        }`}
+                      >
+                        <span className="text-neutral-600 mr-2">{`>`}</span>
+                        {line}
+                      </div>
+                    ))
+                  )}
+                </div>
+              </div>
 
-      {/* Status bar */}
-      <div className="bg-green-500 px-4 py-1.5 text-black text-xs font-medium">
-        <div className="max-w-[1600px] mx-auto flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <span>Venom Code Studio</span>
-            <span className="text-green-700">|</span>
-            <span>{activeFile.language.toUpperCase()}</span>
-            <span className="text-green-700">|</span>
-            <span>UTF-8</span>
+              {/* Tips */}
+              <div className="bg-[#111] border border-[#222] rounded-xl p-4">
+                <h3 className="text-sm font-medium text-white mb-2">💡 Quick Tips</h3>
+                <ul className="text-sm text-neutral-400 space-y-1">
+                  <li>• Switch between files using tabs</li>
+                  <li>• Only JavaScript files can be executed</li>
+                  <li>• Use console.log() to see output</li>
+                  <li>• Download your code anytime</li>
+                </ul>
+              </div>
+
+              {/* File Info */}
+              <div className="bg-[#111] border border-[#222] rounded-xl p-4">
+                <h3 className="text-sm font-medium text-white mb-2">📄 Current File</h3>
+                <div className="text-sm text-neutral-400 space-y-1">
+                  <p>
+                    <span className="text-neutral-600">Name:</span> {activeFile.name}
+                  </p>
+                  <p>
+                    <span className="text-neutral-600">Type:</span> {activeFile.language}
+                  </p>
+                  <p>
+                    <span className="text-neutral-600">Size:</span> {activeFile.content.length} chars
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
-          <div className="flex items-center gap-4">
-            <span>Ln {activeFile.content.split("\n").length}</span>
-            <span>Col 1</span>
-            <span className="text-green-700">|</span>
-            <span>Ready</span>
-          </div>
-        </div>
-      </div>
+        </section>
+      </main>
 
       <Footer />
     </div>
